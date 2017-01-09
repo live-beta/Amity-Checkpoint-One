@@ -1,9 +1,11 @@
-class Person(object):
+
+class Person():
     """docstring for Person."""
-    def __init__(self, arg):
-        super(Person, self).__init__()
-        self.arg = arg
-        
+    def __init__(self):
+        pass
+    def add_person(name,gender,category,employee_num):
+        pass
+
 class Fellow(object):
     """docstring for Fellow."""
     def __init__(self, arg):
@@ -16,11 +18,14 @@ class Staff(object):
         super(Staff, self).__init__()
         self.arg = arg
 
-class Room(object):
+class Room():
     """docstring for Room."""
-    def __init__(self, arg):
-        super(Room, self).__init__()
-        self.arg = arg
+    def __init__(self):
+        pass
+    def createRoom(name,size,occupants,request):
+        pass
+
+
 
 class Office(object):
     """docstring for Office."""

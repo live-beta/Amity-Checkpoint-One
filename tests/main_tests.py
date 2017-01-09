@@ -15,8 +15,10 @@ class amity_tests(unittest.TestCase):
         #inputs should be block letters
 
     def test_add_person(self):
-
+        "Test for checking instance variables"
         "Test for successful creation"
+        "Checking if someone is in the system"
+        "Adding a person to sytem"
         self.assertTrue(Person.add_person('name','gender','category','employee_num'))
         self.raises
          #having relevant variables, name, genfer

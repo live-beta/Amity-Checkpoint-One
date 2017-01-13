@@ -84,6 +84,9 @@ celerybeat-schedule
 venv/
 ENV/
 vrenv/my_env
+tests/get-pip.py
+tests/samples.py
+
 # Spyder project settings
 .spyderproject
 

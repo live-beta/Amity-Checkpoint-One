@@ -18,14 +18,18 @@ class Staff(object):
         super(Staff, self).__init__()
         self.arg = arg
 
-class Room():
+class Room(object):
     """docstring for Room."""
     def __init__(self):
+        self.name="Ed"
+        self.roomcode="C400"
+        self.category="LIVING"
+        self.roomsize= 4
         pass
-    def createRoom(name,size,occupants,request):
+    def create_Rooms(self,roomcode,name,size,category):
+        #self.name=name
+
         pass
-
-
 
 class Office(object):
     """docstring for Office."""

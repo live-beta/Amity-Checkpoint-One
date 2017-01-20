@@ -32,15 +32,19 @@ class amity_tests(unittest.TestCase):
 
         # Checking the room categories as being in the correct range of rooms
 
-        self.assertIn(self.Room.category,['LIVING','OFFICE'],msg="Category can only be OFFICE or LIVING area")
+        self.assertIn(self.Room.category,['LIVING_SPACE','OFFICE'],msg="Category can only be OFFICE or LIVING area")
 
-        # Check if the rooms are in the right size categories
+        # Check if the office are in the right size categories
 
-        self.assertTrue(self.Room.roomsize < 6,msg="Room size should not be greater than 6")
+        self.assertTrue(self.Room.office_size < 6,msg="Room size should not be greater than 6")
 
         # Check if the rooms are of the correct size
 
-        self.assertTrue(self.Room.roomsize >0,msg="The Room size should be greater than 0")
+        self.assertTrue(self.Room.office_size >0,msg="The Room size should be greater than 0")
+
+        # Checking if the living spaces are of the right size
+
+        self.assertTrue(self.Room.living_space < 4, msg="Check if the living space is of the correct size")
 
         # Check if room already exists
 
@@ -49,6 +53,7 @@ class amity_tests(unittest.TestCase):
         "Test for adding new room to list"
 
         self.assertTrue(self.Room.create_Rooms(self,roomcode,name,size,category),msg="Room not created")
+
 
 
     def test_add_person(self):
@@ -97,6 +102,24 @@ class amity_tests(unittest.TestCase):
 
         self.assertTrue(self.Person.add_person(self,name,gender,category,employee_num),msg="Room not created")
 
+    def test_reallocate_room(self):
+
+        self.Person = Person()
+        self.Room = Room()
+
+        "Test for getting personal data using identifier"
+
+        person_allocation_details=self.Person.load_person()
+        person_reallocation_details=self.Room.reallocate_person()
+
+        "Test for allocation"
+
+        #Checking if the list before and after allocation are the same
+
+        self.assertFalse(person_allocation_details == person_reallocation_details,msg="The allocation not successful")
+
+        #new_room_name
+
 
     def test_load_people(self):
 
@@ -113,7 +136,6 @@ class amity_tests(unittest.TestCase):
         #Check if the data set is empty
 
         self.assertNotEqual(len(people_list),0,msg="People have not been loaded")
-
 
 
     def test_print_allocations(self):

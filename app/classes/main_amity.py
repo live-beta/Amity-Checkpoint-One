@@ -1,27 +1,45 @@
 
+
 class Person(object):
 
     """docstring for Person."""
 
     def __init__(self):
-        self.name=""
-        pass
-    def add_person(self):
+        self.name = None
+        self.employee_num = None
+        self.category = None
+        self.wants_room = None
+        self.is_allocated = None
 
-        people_list=[]
+    def add_person(self,name,employee_num,category,wants_room,is_allocated):
+
+        people_list={}
+
+
 
         return people_list
 
     def load_people(self):
-        people_list=[]
+        people_list = {}
 
         return people_list
 
     def load_person(self):
 
-        person_list=[]
-        
+        person_list = {}
+
         return person_list
+
+    def print_unallocated(self):
+
+        person_unallocated_list = {}
+
+        return person_unallocated_list
+
+    def print_allocations(self):
+        person_allocations = {}
+
+        return person_allocations
 
 
 class Fellow(object):
@@ -55,20 +73,31 @@ class Room(object):
 
     def __init__(self):
         self.name="Ed"
-        self.roomcode="C400"
-        self.category="LIVING"
-        self.roomsize= 4
-        pass
+        self.room_code=""
+        self.category=""
+        self.roomsize = None
+        self.occupants = None
 
     def load_Rooms(self):
         pass
 
-    def create_Rooms(self):
+    def print_room(self):
+
+        room_details={}
+        
+        return room_details
+
+
+    def create_Rooms(self,name,category,room_code,size,occupants):
         #self.name=name
+
         pass
 
-    def print_room(self):
-        pass
+    #def print_allocations(self):
+    #    pass
+
+    #def print_unallocation(self):
+    #    pass
 
     def reallocate_person(self):
         pass

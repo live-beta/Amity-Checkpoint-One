@@ -14,8 +14,8 @@ class amity_tests(unittest.TestCase):
 
         "Test for retrieving data from database, assigning to list"
 
-        self.assertTrue(self.database.openDatabase())
-        self.assertTrue(self.database.select_all_rooms())
+        self.assertTrue(self.database.openDatabase(),msg="Was not able to communicate with database")
+        self.assertTrue(self.database.select_all_rooms(), msg="Was not able t communiate with database")
 
         # people_list_initial = self.main_amity.load_people()
         room_list_initial= self.main_amity.load_rooms()
@@ -28,7 +28,7 @@ class amity_tests(unittest.TestCase):
 
         # Check if the room code is in the correct format
 
-        self.assertEqual(self.Room.roomcode,'C400',msg="Check that the room code is valid")
+        self.assertEqual(self.Room.roomcode,'C4',msg="Check that the room code is valid")
 
         # Checking the room categories as being in the correct range of rooms
 
@@ -53,7 +53,6 @@ class amity_tests(unittest.TestCase):
         "Test for adding new room to list"
 
         self.assertTrue(self.Room.create_Rooms(self,roomcode,name,size,category),msg="Room not created")
-
 
 
     def test_add_person(self):
@@ -100,7 +99,8 @@ class amity_tests(unittest.TestCase):
 
         #Check for successful save operation
 
-        self.assertTrue(self.Person.add_person(self,name,gender,category,employee_num),msg="Room not created")
+        self.assertTrue(self.Person.add_person(self,name,gender,category,employee_num,is_allocated),msg="Room not created")
+
 
     def test_reallocate_room(self):
 
@@ -118,8 +118,6 @@ class amity_tests(unittest.TestCase):
 
         self.assertFalse(person_allocation_details == person_reallocation_details,msg="The allocation not successful")
 
-        #new_room_name
-
 
     def test_load_people(self):
 
@@ -130,7 +128,7 @@ class amity_tests(unittest.TestCase):
         #Loading people data
         people_list = self.Person.load_people()
 
-        "Test data set"
+        "Test for data set format"
         self.assertEqual(people_list,{'["SAMMY WANAJALA","FELLOW","Y"]','["STEVENS","WAMALWA","N"]'},msg="Not in the correct format")
 
         #Check if the data set is empty
@@ -140,20 +138,52 @@ class amity_tests(unittest.TestCase):
 
     def test_print_allocations(self):
 
-        "Test for empty record set"
-        "Test for correct data structure"
-        "Test for instance variable"
+        self.Person=Person()
 
-        pass
+        "Test for loading list"
+
+        room_allocation = self.Person.print_allocations()
+
+        # Checking the list is empty
+
+        self.assertNotEqual(len(room_allocation),0,msg="The list contains no allocations")
+
+        self.assertEqual(room_allocation,{'["CYAN","SAMMY WANJALA","S3424"]'})
+
 
     def test_print_unallocations(self):
-        "Testing for unallocations"
-        "Printing formats"
-        "Instance Variables"
-        pass
+
+        self.Person=Person()
+
+        "Test for Printing an unallocated"
+
+        people_unallocated= self.Person.print_unallocated()
+
+        # Checking for an empty list
+
+        self.assertNotEqual(len(people_unallocated),0,msg="the list contains no unallocations")
+
+        # Checking for the correct output format
+        self.assertEqual(people_unallocated,{'["SAMMY WANJALA","N"]'},msg="Your information is not in the correct format")
+
 
     def test_print_room(self):
-        pass
+
+        self.Room = Room()
+
+        "Test for printing room and its occupants"
+
+        room_details = self.Room.print_room()
+
+        # Checking for empty data set
+
+        self.assertNotEqual(len(room_details),0, msg="Room data has not been loaded")
+
+        # Checking for the correct data format
+
+        self.assertEqual(room_details,{["HOGWARTS"],["SAMMY WANJALA","FELLOW"]})
+         
+
 
     def test_save_state(self):
 
@@ -161,14 +191,14 @@ class amity_tests(unittest.TestCase):
         self.Room =Room()
 
 
-        "Testing for additional data"
+        "Testfor additional data"
 
         #Assigning function return values for people and rooms
 
         people_list_initial= self.Person.load_people()
-        people_list_final= self.Person.add_person()
+        people_list_final= self.Person.add_person('SAMMY WANJALA','C-13-N1-01-06N','FELLOW','Y','N')
         room_list_initial= self.Room.load_Rooms()
-        room_list_final= self.Room.create_Rooms()
+        room_list_final= self.Room.create_Rooms('HOGWARTS','OFFICE','H001','6','0')
 
         #Checking for additional data in the people list
 
@@ -179,12 +209,6 @@ class amity_tests(unittest.TestCase):
         self.assertTrue(len(room_list_initial) < len(room_list_final),msg="No additional rooms")
 
 
-        "Test if the additional  data is already in database"
-
-
-        "Test for correct data format"
-
-        pass
 
     def test_load_state(self):
 

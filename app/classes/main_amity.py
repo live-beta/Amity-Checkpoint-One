@@ -1,4 +1,5 @@
 
+from database import Database
 
 class Person(object):
 
@@ -13,16 +14,33 @@ class Person(object):
 
     def add_person(self,name,employee_num,category,wants_room,is_allocated):
 
-        people_list={}
+        # Instanciating the people variables
 
+        people_list = {}
+        new_person =[]
+
+        new_person =[name,employee_num,category,ants_room,is_allocated]
+
+        #Loding data that has been persisted to database
+
+        people_list = self.Database.retrieve_people_info()
+
+        # Appending the new person entered to the existing list
+
+        people_list.update(new_person)
 
 
         return people_list
 
     def load_people(self):
-        people_list = {}
 
-        return people_list
+        #Instanciating the people list dictionary
+
+        load_people_list = {}
+
+        # Reading people data from text_file.
+
+        return load_people_list
 
     def load_person(self):
 
@@ -30,16 +48,16 @@ class Person(object):
 
         return person_list
 
+    def print_allocations(self):
+        person_allocation_list ={}
+
+        return person_allocation_list
+
     def print_unallocated(self):
 
         person_unallocated_list = {}
 
         return person_unallocated_list
-
-    def print_allocations(self):
-        person_allocations = {}
-
-        return person_allocations
 
 
 class Fellow(object):
@@ -84,20 +102,29 @@ class Room(object):
     def print_room(self):
 
         room_details={}
-        
+
         return room_details
 
 
     def create_Rooms(self,name,category,room_code,size,occupants):
-        #self.name=name
 
-        pass
+        # Instanciating room dictionary and new room list
+        room_list ={}
+        new_room=[]
 
-    #def print_allocations(self):
-    #    pass
+        # Populating room from database
 
-    #def print_unallocation(self):
-    #    pass
+        room_list = self.Database.get_rooms()
+
+        # Adding new room to list
+        new_room = [name,category,room_code,size,occupants]
+
+        # Appening the added list
+
+        room_list.update{new_room}
+
+
+        return room_list
 
     def reallocate_person(self):
         pass

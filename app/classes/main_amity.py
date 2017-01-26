@@ -1,36 +1,83 @@
 
 from database import Database
 
-class Person(object):
+class Amity(object):
 
-    """docstring for Person."""
-
+    """docstring for Amity."""
     def __init__(self):
-        self.name = None
-        self.employee_num = None
+        super(Amity, self).__init__()
+        self.name= None
+        self.employee_num =None
         self.category = None
-        self.wants_room = None
-        self.is_allocated = None
+        self.is_allocated =None
+        self.room_name = None
+        self.room_category= None
+        self.room_size = None
+        self.room_occupants = None
+
 
     def add_person(self,name,employee_num,category,wants_room,is_allocated):
 
-        # Instanciating the people variables
+        "Function that adds a new FELLOW or STAFF to the application"
+
+        # Instaninating the people variables
 
         people_list = {}
-        new_person =[]
+        new_person = []
 
-        new_person =[name,employee_num,category,ants_room,is_allocated]
+        new_person = [name,employee_num,category,wants_room,is_allocated]
 
-        #Loding data that has been persisted to database
+        # Loading data that has been persisted in database
 
         people_list = self.Database.retrieve_people_info()
 
-        # Appending the new person entered to the existing list
+        # Appending  the new person, to the exestin list.
+
+        people_list= self.Database.retrieve_people_info()
+
+        # Appending the new person entered to the exesting list
 
         people_list.update(new_person)
 
 
         return people_list
+
+
+    def create_Rooms(self,name,category,room_code,size,occupants):
+
+        # Instanciating room dictionary and new room list
+        room_list ={}
+        new_room=[]
+
+        # Populating room from database
+
+        room_list = self.Database.get_rooms()
+
+        # Adding new room to list
+        new_room = [name,category,room_code,size,occupants]
+
+        # Appening the added list
+
+        room_list.update{new_room}
+
+
+        return room_list
+
+    def reallocate_person(self,employee_num,room_name):
+
+        # Instanciating variables
+        peron_room_allocaion = []
+        room_realocations = {}
+
+        # Loadinng room allocation data dictionary sorted by employee_num
+        person_room_allocation = self.Database.get_allocation(employee_num)
+
+        # Editing the room entry in the list
+        room_index = personal_room_allocation.index(room)
+
+        personal_room_allocation[room_index] = room_name
+
+
 
     def load_people(self):
 
@@ -42,6 +89,14 @@ class Person(object):
 
         return load_people_list
 
+    def print_allocations(self):
+
+        "Printing out amity allocation details"
+
+        person_allocation_list ={}
+
+        return person_allocation_list
+
     def load_person(self):
 
         person_list = {}
@@ -49,15 +104,27 @@ class Person(object):
         return person_list
 
     def print_allocations(self):
-        person_allocation_list ={}
 
-        return person_allocation_list
+        pass
+
 
     def print_unallocated(self):
 
         person_unallocated_list = {}
 
         return person_unallocated_list
+
+    def print_room(self):
+
+        pass
+
+    def load_state(self):
+
+        pass
+
+    def save_state(self):
+        pass
+
 
 
 class Fellow(object):
@@ -106,28 +173,14 @@ class Room(object):
         return room_details
 
 
-    def create_Rooms(self,name,category,room_code,size,occupants):
-
-        # Instanciating room dictionary and new room list
-        room_list ={}
-        new_room=[]
-
-        # Populating room from database
-
-        room_list = self.Database.get_rooms()
-
-        # Adding new room to list
-        new_room = [name,category,room_code,size,occupants]
-
-        # Appening the added list
-
-        room_list.update{new_room}
 
 
-        return room_list
 
-    def reallocate_person(self):
-        pass
+
+
+
+
+
 
 class Office(object):
 

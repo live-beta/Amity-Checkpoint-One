@@ -1,26 +1,26 @@
-
+#from person import Person
+from random import randint
 class Room(object):
 
     """docstring for Room."""
 
-    room_list={}
+    room_list = {}
 
     def __init__(self):
-        self.name="Ed"
-        #self.room_code=""
-        self.category=""
-        self.roomsize = None
-        self.occupants = None
+        pass
 
     def create_Rooms(self,room_name,room_category):
 
-        """Creates a new room entry by ensuring that
-            there are no duplicate entries,correct size and category
+        """
+        Creates a new room entry by ensuring that
+        there are no duplicate entries,correct size and category
+
         """
 
         room = {}
 
         # Check if the room already exists in the room list
+
 
         if room_name in Room.room_list:
 
@@ -30,13 +30,13 @@ class Room(object):
 
             # Add room to app, only if it's 'OFFICE' or 'LIVING'
 
-            if room_category.upper() == "OFFICE" or \
-                room_category.upper() == "LIVING":
+            if room_category.upper() == "OFFICE" or room_category.upper() == "LIVING":
 
                 # Populate the room dictionary if the category is correct
 
                 room['room_category'] = room_category.upper()
                 room['room_name'] = room_name.upper()
+                room['occupants'] = 0
 
                 if room_category == 'LIVING':
 
@@ -62,55 +62,78 @@ class Room(object):
 
         # Print Existing room list
 
-        return Room.room_list
+        print Room.room_list
 
     def allocate_work_space(self):
 
         """"
+
         Allocates a room at random by filtering out office spaces
         that are available
-        """"
+
+        """
 
         # Check if room list contains available rooms.
 
         work_space_list =[]
- 
+
         # Populating list with office spaces
 
-        for space in room_list:
+        if len(Room.room_list) == 0:
+            print 'There are no rooms stored'
 
-            # Check if the office spaces are fully occupied
+        for space in Room.room_list:
 
-            if category == "OFFICE" and occupants < 6 :
+        # Check if the office spaces are fully occupied
 
-                work_space_list.append(space)
+            print space
 
-            elif space.occupants == 6:
+            print Room.room_list.get('',{})
 
-                return 'All Spaces are occupied'
+        # Load Office rooms that are not full
+
+            if Room.room_list[space]['room_category'] == 'OFFICE' and Room.room_list[space]['occupants'] < 6 :
+
+               work_space_list.append(space)
+
+        # Check if the rooms are available
+
+            elif Room.room_list[space]['occupants'] == 6:
+
+                return 'The Office spaces are all occupied'
+
 
         # When there are no rooms in the list
 
         if len(work_space_list) == 0:
 
-            return 'Office spaces not available '
+            print 'Office spaces are not yet added to the system'
 
         else:
 
-            # Random room allocation
+        # Randomly alloate rooms using a random index generator
 
-            work_space_number = randint(0,len(work_space_list))
 
-        # Returning room from list
+            work_space_number = randint(-1,len(work_space_list))
+
+            room_allocated = work_space_list[work_space_number]
+
+        # Increament the occupants by 1
+
+            Room.room_list[room_allocated]['occupants'] += 1
+
+        # Returning room from the list of available rooms
 
         return work_space_list[work_space_number]
 
 
     def allocate_living_room(self):
+
         """"
         Allocates a room at random by filtering out Living spaces
         that are available
-        """"
+
+        """
 
         living_space_list = []
 
@@ -140,10 +163,35 @@ class Room(object):
         return living_space_list[living_space_number]
 
     def load_Rooms(self):
-        pass
+
+        # Open file with room data
+        room_data = open('load_rooms.txt')
+
+        ## Read the first line
+        room_info = room_data.readline()
+
+        while line:
+            print line
+            line = f.readline()
+        f.close()
+
+        return room_info
+
 
     def print_room(self):
 
-        room_details={}
+        """Prints out the rooms that are available
+         in the system
 
-        return room_details
+         """
+
+        # Declaring a list of all avaialable rooms
+
+        room_element = []
+
+        # Looping through the room dictionary
+        for room in Room.room_list:
+            room_element.append(room)
+
+
+        return room_element

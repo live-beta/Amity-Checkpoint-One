@@ -1,16 +1,27 @@
 import unittest
-from app.classes.main_amity import Room,Person
+#from app.classes.amity import Amity
+from app.classes.person import Person
+from app.classes.room import Room
+#from app.classes.main_amity import Room,Person
 from app.classes.database import Database
 
 class amity_tests(unittest.TestCase):
 
 
     """Tests for Amity functions ."""
+    # Creating an instance of Room,Person and Database
+
+    def setUp(self):
+
+        # Instanciating class wide Objects
+
+        self.Person = Person()
+        self.Room = Room ()
+        self.database = Database()
+
 
     def test_create_Rooms(self):
 
-        self.Room = Room()
-        self.database = Database()
 
         "Test for retrieving data from database, assigning to list"
 
@@ -18,6 +29,7 @@ class amity_tests(unittest.TestCase):
         self.assertTrue(self.database.select_all_rooms(), msg="Was not able to communiate with database")
 
         room_list_initial= self.main_amity.load_rooms()
+
 
         "Test for instance variables"
 
@@ -47,7 +59,7 @@ class amity_tests(unittest.TestCase):
 
         #Checking if living space is not null
 
-        self.assertTrue(self.living_space >0, msg="The room size should be greater than 0")
+        self.assertTrue(self.Room.living_space >0, msg="The room size should be greater than 0")
 
         # Check if there is already an instance of the room being created
 
@@ -56,27 +68,24 @@ class amity_tests(unittest.TestCase):
 
     def test_add_person(self):
 
-        self.Person = Person()
-        self.database = Database()
+        "Test for retrieving application data."
 
-        "Test for retrieving data from database, assigning to people list"
+        # self.assertTrue(self.database.openDatabase())
+        # self.assertTrue(self.database.select_all_people())
 
-        self.assertTrue(self.database.openDatabase())
-        self.assertTrue(self.database.select_all_people())
+        # Loading people data from application data
 
-        # Loading people data from database
-
-        people_list_initial = self.Person.load_people()
+        people_initial_list = self.Person.load_people()
 
         "Test for instance variables"
 
-        # Check if the database returns a null People record
+        # Check if application returns a null People record
 
-        self.assertNotEqual(len(people_list_initial),0,msg="The people record set is blank")
+        self.assertNotEqual(len(people_initial_list),0,msg="The people record set is blank")
 
         # Check for the correct employee number format
 
-        self.assertEqual(self.Person.employee_num.upper(),'C-13-N1-01-06N',msg="The employee number is in the wrong format")
+        self.assertEqual(self.Person.emp_num.upper(),'C-13-N1-01-06N',msg="The employee number is in the wrong format")
 
         # Check for correct employee category
 
@@ -93,21 +102,17 @@ class amity_tests(unittest.TestCase):
         self.assertTrue(len(people_list_initial)<len(people_list_final),msg="No new entry made")
 
 
-    def test_reallocate_room(self):
-
-        self.Person = Person()
-        self.Room = Room()
+    def test_reallocate_person(self):
 
         "Test for person reallocation"
 
         # Loading data dictionary for the people as allocated
 
-        person_allocation_details=self.Person.load_person()
+        person_allocation_details = self.Person.people_list
 
         # Loading data dictionary for the people as reallocated
 
-        person_reallocation_details=self.Room.reallocate_person()
-
+        person_reallocation_details = self.Person.reallocate_person(0,"CYAN")
 
         # Cheking if the reallcation was successful
 
@@ -115,8 +120,6 @@ class amity_tests(unittest.TestCase):
 
 
     def test_load_people(self):
-
-        self.Person = Person()
 
         "Test for loading people from a txt file"
 
@@ -133,14 +136,12 @@ class amity_tests(unittest.TestCase):
         self.assertEqual(people_list,{'["SAMMY WANAJALA","FELLOW","Y"]','["STEVENS","WAMALWA","N"]'},msg="Not in the correct format")
 
 
-
     def test_print_allocations(self):
 
-        self.Person=Person()
 
         "Test for printing allocations"
 
-        room_allocation = self.Person.print_allocations()
+        room_allocation = self.Room.print_room()
 
         # Checking for data availability in the loded list
 
@@ -153,7 +154,6 @@ class amity_tests(unittest.TestCase):
 
     def test_print_unallocated(self):
 
-        self.Person=Person()
 
         "Test for Printing unallocated people"
 
@@ -161,7 +161,7 @@ class amity_tests(unittest.TestCase):
 
         # Checking for data availability in the loaded list
 
-        self.assertEqual(len(people_unallocated),0,msg="the list contains no unallocations")
+        self.assertNotEqual(len(people_unallocated),0,msg="the list contains no unallocations")
 
         # Checking for the correct output format
 
@@ -170,7 +170,6 @@ class amity_tests(unittest.TestCase):
 
     def test_print_room(self):
 
-        self.Room = Room()
 
         "Test for printing room and its occupants"
 
@@ -187,10 +186,6 @@ class amity_tests(unittest.TestCase):
 
 
     def test_save_state(self):
-
-        self.Person = Person()
-        self.Room =Room()
-
 
         "Test for saving the data state"
 

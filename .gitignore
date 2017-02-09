@@ -93,3 +93,6 @@ tests/samples.py
 # Rope project settings
 .ropeproject
 example.py
+test.db
+sampledb.py
+notes.txt

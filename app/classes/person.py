@@ -1,4 +1,6 @@
+import os
 from room import Room
+
 class Person(object):
 
     """docstring for Person."""
@@ -7,14 +9,14 @@ class Person(object):
     def __init__(self):
         pass
 
-    def add_person(self,person_name,person_job,wants_room ='N',emp_no):
+    def add_person(self,person_name,person_job,emp_no,employee_number,wants_room ='N'):
 
         person = {}
         obj_room = Room()
 
         # Check if the person already exists in the people list
 
-        if person_name and emp_no in Person.person_list:
+        if person_name in Person.people_list:
 
             print 'The person already exists in the system'
 
@@ -28,21 +30,22 @@ class Person(object):
 
                 person['job'] = person_job.upper()
                 person['name'] = person_name.upper()
-                person['employee_num'] = emp_no
+                person['employee_num'] = employee_number
                 person['job'] = person_job.upper()
 
                 # Allocate working space to person
                 person['work_space'] = obj_room.allocate_work_space()
 
-                if wants_accommodation == 'Y' and person_job ='FELLOW':
+                if wants_room == 'Y' and person_job =='FELLOW':
 
                     # If Fellow wants accomodation
 
                     room_name = obj_room.allocate_living_room()
+                    work_space = obj_room.allocate_work_space()
 
                     person['room'] = room_name.upper()
 
-                elif wants_accommodation == 'Y' and person_job ='STAFF':
+                elif wants_room == 'Y' and person_job =='STAFF':
 
                     # An instance where Staff requests for accomodation
 
@@ -60,17 +63,60 @@ class Person(object):
 
         # Update the real time list.
 
-        Person.people_list[emp_no] = person
+        Person.people_list[employee_number] = person
 
         # Print people list
 
         return Person.people_list
 
+    def load_people(self):
 
-    def allocate_work_space(self,emp_no):
-        pass
+        """
+        Adding people from a text file on the users system
 
-class Fellow(person):
+        """
+        # Open file with people's data
+        myfile = open("people.txt","r")
+        data = ""
+        lines = myfile.readlines()
+        for line in lines:
+            data = data + line.strip();
+
+        return data
+
+    def reallocate_person(self,emp_no,room_name):
+
+        """
+        Placing person in a different room.
+
+        """
+        personal_detail_list = {}
+        # Loading data of an individual using a unique identifier employee number
+
+        personal_detail_list = Person.people_list.get("employee_num",emp_no)
+
+        # Assigning a new room to the person selected
+
+        personal_detail_list['room'] = room_name
+
+        #Updating the edited list
+
+        Person.people_list.update(personal_detail_list)
+
+        return Person.people_list
+
+    def print_unallocated(self):
+
+        """
+        Prints out all the people who are unallocates in the system
+
+        """
+        unallocated_list = []
+        return unallocated_list
+
+
+
+class Fellow(Person):
 
     """docstring for FELLOW, subclass of Person."""
 
@@ -82,7 +128,7 @@ class Fellow(person):
         pass
 
 
-class Staff(person):
+class Staff(Person):
 
     """docstring for staff subclass of Person."""
 

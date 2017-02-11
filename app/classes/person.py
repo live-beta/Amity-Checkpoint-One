@@ -5,11 +5,16 @@ class Person(object):
 
     """docstring for Person."""
     people_list = {}
+    room_allocation_list ={}
 
     def __init__(self):
         pass
 
-    def add_person(self,person_name,person_job,emp_no,employee_number,wants_room ='N'):
+    def add_person(self,person_name,person_job,wants_room,employee_number):
+        """
+        Function that adds a new person to the system
+
+        """
 
         person = {}
         obj_room = Room()
@@ -34,18 +39,21 @@ class Person(object):
                 person['job'] = person_job.upper()
 
                 # Allocate working space to person
+                # work_space = obj_room.allocate_work_space()
+
                 person['work_space'] = obj_room.allocate_work_space()
 
-                if wants_room == 'Y' and person_job =='FELLOW':
+                if wants_room.upper() == 'Y' and person_job.upper() =='FELLOW':
 
                     # If Fellow wants accomodation
 
                     room_name = obj_room.allocate_living_room()
-                    work_space = obj_room.allocate_work_space()
+
+                    #work_space = obj_room.allocate_work_space()
 
                     person['room'] = room_name.upper()
 
-                elif wants_room == 'Y' and person_job =='STAFF':
+                elif wants_room.upper() == 'Y' and person_job.upper() =='STAFF':
 
                     # An instance where Staff requests for accomodation
 
@@ -61,7 +69,7 @@ class Person(object):
 
                 print 'Enter the correct job description'
 
-        # Update the real time list.
+        # Update the people list.
 
         Person.people_list[employee_number] = person
 

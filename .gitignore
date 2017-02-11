@@ -86,7 +86,6 @@ ENV/
 vrenv/my_env
 tests/get-pip.py
 tests/samples.py
-
 # Spyder project settings
 .spyderproject
 
@@ -94,5 +93,7 @@ tests/samples.py
 .ropeproject
 example.py
 test.db
-sampledb.py
+sampledb.pye
 notes.txt
+people.txt
+sample_code.py

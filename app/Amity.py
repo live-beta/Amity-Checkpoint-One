@@ -3,7 +3,6 @@
 Usage:
     amity create_room <room_name> <category>
     amity add_person <person_name> <person_job> <wants_accomodation> <employee_number>
-    amity product_type <product_code>
     amity reallocate_person <person_identifier> <room_name>
     amity load_people
     amity print_allocations
@@ -108,25 +107,16 @@ class MyInteractive(cmd.Cmd):
 
 
     @docopt_cmd
-    def do_item_remove(self, args):
-        """
-        Usage: add_person <person_name><FELLOW|STAFF> <wants_accomodation>
-        """
-        item_id = args["<itemid>"]
-        add_obj = Item_console()
-        #add_obj.remove_item(item_id)
-        print(add_obj.remove_item(item_id))
-
-    @docopt_cmd
     def do_reallocate_person(self, args):
         """
         Usage: reallocate_person <person_identifier> <room_name>
         """
-        item_id = args["<itemid>"]
-        add_obj = Item_console()
-        add_obj.item_check_out(item_id)
-        print
-        "Item Checked Out"
+        emp_no = args["<person_identifier>"]
+        room_name = args["<room_name>"]
+        real_obj = Person()
+
+        print real_obj.reallocate_person(emp_no,room_name)
+
 
     @docopt_cmd
     def do_load_people(self, args):

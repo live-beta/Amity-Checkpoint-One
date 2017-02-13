@@ -37,6 +37,7 @@ class Person(object):
                 person['name'] = person_name.upper()
                 person['employee_num'] = employee_number
                 person['job'] = person_job.upper()
+                person['wants_room']= wants_room
 
                 # Allocate working space to person
                 # work_space = obj_room.allocate_work_space()
@@ -98,18 +99,52 @@ class Person(object):
         Placing person in a different room.
 
         """
-        personal_detail_list = {}
-        # Loading data of an individual using a unique identifier employee number
+        obj_room = Room()
 
-        personal_detail_list = Person.people_list.get("employee_num",emp_no)
+        room_reassigned = {}
 
-        # Assigning a new room to the person selected
+        # Assigning a new room
 
-        personal_detail_list['room'] = room_name
+        room_reassigned = obj_room.reallocate(room_name.upper())
 
-        #Updating the edited list
+        if room_reassigned['category'] == 'OFFICE':
 
-        Person.people_list.update(personal_detail_list)
+            # If the room returned is an office
+
+            Person.people_list[emp_no]['work_space'] = room_reassigned['name']
+
+        elif room_reassigned['category'] == 'LIVING' \
+            and Person.people_list[emp_no]['job'] == 'FELLOW' \
+                and Person.people_list['wants_room'] == 'Y':
+
+            # If fellow wants room
+
+            Person.people_list[emp_no]['room'] = room_reassigned['name']
+
+        elif room_reassigned['category'] == 'LIVING' \
+            and Person.people_list[emp_no]['job'] == 'FELLOW' \
+                and Person.people_list['wants_room'] == 'N':
+
+                # If the fellow being assigned did not require a room
+
+                option =raw_input('The fellow did not require a room before, are you sure you want to proceed? Y|N')
+
+                if option == 'Y':
+
+                    Person.people_list[emp_no]['room'] = room_reassigned['name']
+
+                elif option == 'N':
+                    return 'The fellow does not require a room'
+
+                else:
+
+                    return 'Invalid input'
+
+
+        elif room_reassigned['category'] == 'LIVING' \
+            and Person.people_list[emp_no]['job'] == 'STAFF':
+
+            return 'Staff not allowed to have accomodation on site'
 
         return Person.people_list
 
@@ -121,8 +156,6 @@ class Person(object):
         """
         unallocated_list = []
         return unallocated_list
-
-
 
 class Fellow(Person):
 

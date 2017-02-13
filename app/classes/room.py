@@ -210,32 +210,70 @@ class Room(object):
 
         return living_space_list[living_space_index]
 
-    def reallocate_room(self,employee_number,allocate_new):
+    def reallocate(self,allocate_new):
 
         # Check if there are available rooms.
+        offices_available = []
+        room_allocated = {}
         if len(Room.room_list) == 0:
 
             return 'There are no rooms in the system'
 
         else:
+            # Check if the rooms are available for reallocatio
+            for room_entry in Room.room_list:
 
-            for reallocate_room in Room.room_list:
+                # Populate if the room is office
+
+                if Room.room_list[room_entry]['status'] == 'available' \
+                    and Room.room_list[room_entry]['room_category'] == 'OFFICE':
+
+                    # Populate the available rooms in the list offices
+
+                    offices_available.append(room_entry)
+
+                elif Room.room_list[room_entry] == 'available' \
+                    and Room.room_list[room_entry]['room_category'] == 'LIVING':
+
+                    # Populating the list for all the reallocatable living spaces.
+
+                    living_available.append(room_category)
+
+                else:
+
+                    return 'There are no rooms available for relocation'
 
 
-                if Room.room_list[work_space]['room_category'] == 'OFFICE':
+        for allocate_new in Room.room_list:
 
-                    # Creating a list of available spaces in the system
+            if Room.room_list[allocate_new]['room_category'] == 'OFFICE':
 
-                    if Room.room_list[work_space]['room_category'] == \
-                        'OFFICE' and Room.room_list[work_space]['occupants'] < 6:
-                        allocated_room_list.append(reallocate_room)
+                # Randomly reallocate office space to the person
 
+                reallocate_space_index = randint(0,len(offices_available)-1)
+                room_allocated['name'] = offices_available[reallocate_space_index]
+                room_allocated['category'] = 'OFFICE'
+                Room.room_list[allocate_new]['occupants'] += 1
 
+                return room_allocated
 
+            if Room.room_list[allocate_new]['room_category'] == 'LIVING':
 
-        # Loading allocated rooms
-        #loading available rooms
-        # loading the people list
+                # Randomly reallocate living space to fellow
+
+                reallocate_space_index = randint(0,len(living_available)-1)
+                room_allocated['name'] = living_available[reallocate_space_index]
+                room_allocated['category'] = 'LIVING'
+                Room.room_list[allocate_new]['occupants'] += 1
+
+                return room_allocated
+
+            else:
+
+                # If the system does not contain the required room name
+
+                return 'Room not in the system'
+
 
 
 

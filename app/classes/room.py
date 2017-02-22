@@ -230,6 +230,42 @@ class Office(Room):
 
             return work_space_list[work_space_number]
 
+    def reallocate_living_room(self,new_space, initial_room):
+        """
+        Reallocating the living area on request
+        """
+        living_rooms_available = []
+        room_allocated = {}
+
+        if len(Room.room_list) == 0:
+            return 'There are no more availble rooms in the system'
+        # Check for the room category
+        if new_space in Room.room_list:
+
+            # If the space in room check category
+            if Room.room_list[new_space]['room_category'] == 'LIVING':
+
+                return 'The Room you have entered is not an office'
+
+        else:
+            return 'Enter a valid room'
+
+        for room_entry in Room.room_list:
+            # Populating to a list if the room is an office
+            if Room.room_list[room_entry]['status'] == 'available' \
+                and Room.room_list[room_entry]['room_category'] == 'LIVING':
+
+                living_rooms_available.append(room_entry)
+
+        if len(living_rooms_available) == 0:
+            return 'Unable to reallocate. No Living spaces'
+
+        # Affecting the changes that have been requsted
+        living_rooms_available[new_space]['occupants'] += 1
+        Room.room_list[initial_room]['occupants'] -= 1
+
+        return True
+
     def reallocate_office_space(self, new_space, initial_room):
 
         # Check whether there ar any available rooms

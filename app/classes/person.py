@@ -1,5 +1,5 @@
 import os
-from room import Room, Living_Space, Office
+from room import Room, Living_Space, Office, Living_Space
 
 
 class Person(object):
@@ -97,61 +97,32 @@ class Person(object):
         if space in living_rooms:
 
             initial_room = Person.people_list[emp_no]['living_space']
+
             if space == intial_room:
                 return 'Cannot reallocate to the same room'
-            reassign = obj_office.reallocate_office_space(living_space.upper(),initial_room)
+            reassign = obj_living.reallocate_living_space(living_space.upper(),initial_room)
+
             if reassign == True:
                 Person.people_list[emp_no]['living_space'] = space
+            else:
+                return 'Reallocation successful'
 
         elif space in work_space:
+
             initial_room = Person.people_list[emp_no]['work_space']
+
             if space == initial_room:
                 return 'Cannot allocate to the same room'
             reassign = obj_office.reallocate_office_space(work_space.upper(),intial_room)
-            if reassign == True:
+
+            if reassign is True:
 
                 Person.people_list[emp_no]['work_space'] = space
         else:
 
             return 'Enter the correct room '
 
-        # Assigning a new room
-
-        if work_space == initial_room:
-            return 'Cannot be reassigned to the same room'
-
-            reassign = obj_office.reallocate_office_space(work_space.upper(),initial_room)
-
-            if reassign == True:
-                Person.people_list[emp_no]['work_space'] = work_space
-
-        self.allocation(Person.people_list)
-
-        # elif room_reassigned['category'] == 'LIVING' \
-        #     and Person.people_list[emp_no]['job'] == 'FELLOW' \
-        #         and Person.people_list['wants_room'] == 'N':
-        #
-        #         # If the fellow being assigned did not require a room
-        #
-        #         option = raw_input('The fellow did not require a room before,\
-        #                 are you sure you want to proceed? Y|N')
-        #
-        #         if option == 'Y':
-        #
-        #             Person.people_list[emp_no]['room'] \
-        #                 = room_reassigned['name']
-        #
-        #         elif option == 'N':
-        #             return 'The fellow does not require a room'
-        #
-        #         else:
-        #
-        #             return 'Invalid input'
-
-        # elif room_reassigned['category'] == 'LIVING' \
-        #         and Person.people_list[emp_no]['job'] == 'STAFF':
-        #
-        #     return 'Staff not allowed to have accomodation on site'
+        self.allocation(Person.people_list)'
 
         return Person.people_list
 

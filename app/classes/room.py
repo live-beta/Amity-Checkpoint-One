@@ -1,5 +1,5 @@
-#from person import Person
 from random import randint
+
 
 class Room(object):
 
@@ -11,7 +11,7 @@ class Room(object):
     def __init__(self):
         pass
 
-    def create_Rooms(self,room_name,room_category):
+    def create_Rooms(self, room_names, room_category):
 
         """
         Creates a new room entry by ensuring that
@@ -20,138 +20,86 @@ class Room(object):
         """
 
         room = {}
-        people ={}
-
+        people = {}
 
         # Check if the room already exists in the room list
+        for room_name in room_names:
 
-        if room_name in Room.room_list:
+            if room_name in Room.room_list:
 
-            print 'The Room already exists in the system'
+                print 'The Room already exists in the system'
 
-        else:
+            else:
 
-            # Add room to app, only if it's 'OFFICE' or 'LIVING'
-
-            if room_category.upper() == "OFFICE" or room_category.upper() == "LIVING":
-
-                # Populate the room dictionary if the category is correct
+                # Populate room decitionary
+                # Define the room attributes
 
                 room['room_category'] = room_category.upper()
                 room['room_name'] = room_name.upper()
                 room['occupants'] = 0
                 room['status'] = 'available'
 
-                # people['room_name'] = room['room_name']
-                # people['person_name'] = ''Room_in_room_data['person_name']''
-                # people['employee_num'] = None
-
-                room['people_in'] = Room.people_in_room_data
-
                 if room_category == 'LIVING':
 
                     # Living rooms should have 4 occupants
 
-                    room ['room_size']= 4
+                    room['room_size'] = 4
 
                 elif room_category == 'OFFICE':
 
                     # Office rooms should have 6 occupants
 
-                    room ['room_size'] = 6
+                    room['room_size'] = 6
 
-            else:
 
-                # Any other category is incorrect
 
-                return 'Room type can only be LIVING or OFFICE '
+            # Update the real time room list.
 
-        # Update the real time room list.
-
-        Room.room_list[room_name] = room
+            Room.room_list[room_name] = room
         # Room.people_in_room_data[room_name] = people
 
         # Print Existing room list
 
         print Room.room_list
 
-    def allocate_work_space(self):
+    def print_room(self, room_name):
 
-        """"
+        """Prints out the rooms that are available
+         in the system
 
-        Allocates a room at random by filtering out office spaces
-        that are available
+         """
 
-        """
+        # Declaring a list of all avaialable rooms
 
-        # Check if room list contains available rooms.
+        room_element = []
 
-        work_space_list =[]
-        work_space_full =[]
-        # people = {}
-        work_space_number = None
+        # Looping through the room dictionary
+        for room in Room.room_list:
+            room_element.append(room)
 
-        # Populating list with office spaces
+        return room_element
 
-        if len(Room.room_list) == 0:
+    def load_Rooms(self):
 
-            return 'There are no rooms added'
+        # Open file with room data
+        room_data = open('load_rooms.txt')
 
-        else:
+        # Read the first line
+        room_info = room_data.readline()
 
-            # Traversing the list to determine that office spaces are available
+        while line:
+            print line
+            line = f.readline()
+        f.close()
 
-            for work_space in Room.room_list:
-
-                if Room.room_list[work_space]['room_category'] == 'OFFICE':
-
-                    # Creating a list of available OFFICE spaces form a dictionary of all rooms
-
-                    if Room.room_list[work_space]['room_category'] == \
-                    'OFFICE'and Room.room_list[work_space]['occupants'] < 6:
-
-                    # Appending data for list with work spaces to list
-
-                        work_space_list.append(work_space)
-                        #work_space_list.append(Roomself.people_in_room)
-
-                    elif Room.room_list[work_space]['room_category'] ==\
-                        'OFFICE' and Room.room_list[work_space]['occupants'] == 6:
-
-                    # Collect all the full rooms
-                        work_space_full.append(work_space)
-
-                    else:
-
-                        return 'No Office spaces in the system'
-
-            if len(work_space_list)==0:
-
-                return 'No more rooms'
-
-            else:
-
-                # Run a list index generator
-
-                work_space_number = randint(0,len(work_space_list)-1)
-                room_allocated = work_space_list[work_space_number]
-                Room.room_list[room_allocated]['occupants'] += 1
-
-                # Adding the specific person into the room that has been created
-                # Every instance of this piece of code represents a record
-
-                # people['person_name'] = person_name
-                # people['room_name'] = room_allocated
-                # people['employee_number'] = employee_number
-                #
-                # # Room.people_in_room_data['room_name'] = room_allocated
-                # # Room.people_in_room_data['person_name'] = person_name
-                # # Room.people_in_room_data['employee_number'] = employee_number
-                #
-                # Room.people_in_room_data[room_allocated] = people
+        return room_info
 
 
-        return work_space_list[work_space_number]
+class Living_Space(Room):
+
+    """docstring for Living_Space."""
+    def __init__(self):
+        super(Living_Space, self).__init__()
 
     def allocate_living_room(self):
 
@@ -179,16 +127,18 @@ class Room(object):
                     # Creating a list of available Living Rooms
 
                     if Room.room_list[living_space]['room_category'] == \
-                    'LIVING'and Room.room_list[living_space]['occupants'] < 4:
+                        'LIVING' and \
+                            Room.room_list[living_space]['occupants'] < 4:
 
-                    # Appending data for list with living spaces
+                        # Appending data for list with living spaces
 
                         living_space_list.append(living_space)
 
                     elif Room.room_list[living_space]['room_category'] ==\
-                        'LIVING' and Room.room_list[living_space]['occupants'] == 4:
+                        'LIVING' and \
+                            Room.room_list[living_space]['occupants'] == 4:
 
-                    # Collect all the full rooms
+                        # Collect all the full rooms
                         living_space_full.append(living_space)
 
                     else:
@@ -202,111 +152,116 @@ class Room(object):
             else:
 
                 # Run an list index generator
-
-                living_space_index = randint(0,len(living_space_list)-1)
+                living_space_index = randint(0, len(living_space_list)-1)
                 room_allocated = living_space_list[living_space_index]
                 Room.room_list[room_allocated]['occupants'] += 1
 
-
         return living_space_list[living_space_index]
 
-    def reallocate(self,allocate_new):
 
-        # Check if there are available rooms.
-        offices_available = []
-        room_allocated = {}
-        if len(Room.room_list) == 0:
+class Office(Room):
 
-            return 'There are no rooms in the system'
+    """docstring for Office."""
+    def __init__(self):
+        super(Office, self).__init__()
 
-        else:
-            # Check if the rooms are available for reallocatio
-            for room_entry in Room.room_list:
+    def allocate_office_space(self):
 
-                # Populate if the room is office
+            """"
 
-                if Room.room_list[room_entry]['status'] == 'available' \
-                    and Room.room_list[room_entry]['room_category'] == 'OFFICE':
+            Allocates a room at random by filtering out office spaces
+            that are available
 
-                    # Populate the available rooms in the list offices
+            """
 
-                    offices_available.append(room_entry)
+            # Check if room list contains available rooms.
 
-                elif Room.room_list[room_entry] == 'available' \
-                    and Room.room_list[room_entry]['room_category'] == 'LIVING':
+            work_space_list = []
+            work_space_full = []
+            # people = {}
+            work_space_number = None
 
-                    # Populating the list for all the reallocatable living spaces.
+            # Populating list with office spaces
 
-                    living_available.append(room_category)
+            if len(Room.room_list) == 0:
 
-                else:
-
-                    return 'There are no rooms available for relocation'
-
-
-        for allocate_new in Room.room_list:
-
-            if Room.room_list[allocate_new]['room_category'] == 'OFFICE':
-
-                # Randomly reallocate office space to the person
-
-                reallocate_space_index = randint(0,len(offices_available)-1)
-                room_allocated['name'] = offices_available[reallocate_space_index]
-                room_allocated['category'] = 'OFFICE'
-                Room.room_list[allocate_new]['occupants'] += 1
-
-                return room_allocated
-
-            if Room.room_list[allocate_new]['room_category'] == 'LIVING':
-
-                # Randomly reallocate living space to fellow
-
-                reallocate_space_index = randint(0,len(living_available)-1)
-                room_allocated['name'] = living_available[reallocate_space_index]
-                room_allocated['category'] = 'LIVING'
-                Room.room_list[allocate_new]['occupants'] += 1
-
-                return room_allocated
+                return 'None'
 
             else:
 
-                # If the system does not contain the required room name
+                # Traversing the list to determine that office spaces are available
 
-                return 'Room not in the system'
+                for work_space in Room.room_list:
 
+                    if Room.room_list[work_space]['room_category'] == 'OFFICE':
 
+                        # Creating a list of available offices
+                        if Room.room_list[work_space]['room_category'] == \
+                            'OFFICE' and \
+                                Room.room_list[work_space]['occupants'] < 6:
 
+                            # Appending data for list with work spaces to list
 
-    def load_Rooms(self):
+                            work_space_list.append(work_space)
+                            # work_space_list.append(Roomself.people_in_room)
 
-        # Open file with room data
-        room_data = open('load_rooms.txt')
+                        elif Room.room_list[work_space]['room_category'] ==\
+                            'OFFICE' and \
+                                Room.room_list[work_space]['occupants'] == 6:
 
-        ## Read the first line
-        room_info = room_data.readline()
+                            # Collect all the full rooms
+                            work_space_full.append(work_space)
 
-        while line:
-            print line
-            line = f.readline()
-        f.close()
+                        else:
 
-        return room_info
+                            return 'No Office spaces in the system'
 
+                if len(work_space_list) == 0:
 
-    def print_room(self):
+                    return 'No more rooms'
 
-        """Prints out the rooms that are available
-         in the system
+                else:
 
-         """
+                    # Run a list index generator
 
-        # Declaring a list of all avaialable rooms
+                    work_space_number = randint(0, len(work_space_list)-1)
+                    room_allocated = work_space_list[work_space_number]
+                    Room.room_list[room_allocated]['occupants'] += 1
 
-        room_element = []
+            return work_space_list[work_space_number]
 
-        # Looping through the room dictionary
-        for room in Room.room_list:
-            room_element.append(room)
+    def reallocate_office_space(self, new_space, initial_room):
 
+        # Check whether there ar any available rooms
 
-        return room_element
+        offices_available = []
+        room_allocated = {}
+
+        if len(Room.room_list) == 0:
+            return 'There are no more availble rooms in the system'
+        # Check for the room category
+        if new_space in Room.room_list:
+
+            # If the space in room check category
+            if Room.room_list[new_space]['room_category'] == 'LIVING':
+
+                return 'The Room you have entered is not an office'
+
+        else:
+            return 'Enter a valid room'
+
+        for room_entry in Room.room_list:
+            # Populating to a list if the room is an office
+            if Room.room_list[room_entry]['status'] == 'available' \
+                and Room.room_list[room_entry]['room_category'] == 'OFFICE':
+
+                offices_available.append(room_entry)
+
+        if len(offices_available) == 0:
+            return 'Unable to reallocate. No Office spaces'
+
+        # Affecting the changes that have been requsted
+        offices_available[new_space]['occupants'] += 1
+        Room.room_list[initial_room]['occupants'] -= 1
+
+        return True

@@ -1,9 +1,8 @@
 #!/usr/bin/env python
 """
 Usage:
-    amity create_room <room_name> <category>
-    amity add_person <person_name> <person_job> <wants_accomodation> <employee_number>
-    amity product_type <product_code>
+    amity create_room <category> <room_name>...
+    amity add_person <f_name> <s_sname> <person_job> <employee_number> [<wants_accomodation>]
     amity reallocate_person <person_identifier> <room_name>
     amity load_people
     amity print_allocations
@@ -27,7 +26,7 @@ from docopt import docopt, DocoptExit
 from classes.person import Person
 from classes.room import Room
 from random import randint
-#from inventory import Item_console
+# From inventory import Item_console
 
 
 def docopt_cmd(func):
@@ -70,25 +69,33 @@ class MyInteractive(cmd.Cmd):
     @docopt_cmd
     def do_create_room(self, args):
         """
-        Usage: create_room <room_name> <category>
+        Usage: create_room <category> <room_name>...
         """
-        room_name = args["<room_name>"]
+        room_names = args["<room_name>"]
         category = args["<category>"]
-
-
         add_obj = Room()
+
         #print "this is to show that this function has a heart"
-        add_obj.create_Rooms(room_name, category)
+
+        if category.upper() != 'LIVING' and category.upper() != 'OFFICE':
+
+            print category + ' Is not a valid Room type, \
+                    try again with office or living'
+
+        else:
+
+            add_obj.create_Rooms(room_names, category.upper())
 
     @docopt_cmd
     def do_add_person(self, args):
         """
-        Usage: add_person <person_name> <person_job> <wants_accomodation> <employee_number>
+        Usage: add_person <f_name> <s_name> <person_job> <employee_number> [<wants_accomodation>]
         """
+        s_name =args["<s_name>"]
         employee_number = None
-        person_name = args["<person_name>"]
+        f_name = args["<f_name>"]
         person_job = args["<person_job>"]
-        wants_accomodation = args["<wants_accomodation>"]
+        wants_accomodation = args["<wants_accomodation>"] or "N"
         employee_number =args["<employee_number>"]
 
         # Create Employee number using number generator and stringbuilder
@@ -104,66 +111,55 @@ class MyInteractive(cmd.Cmd):
         add_obj = Person()
 
 
-        print add_obj.add_person(person_name,person_job,wants_accomodation,employee_number)
+        print add_obj.add_person(f_name,s_name,person_job,employee_number,wants_accomodation.upper())
 
-
-    @docopt_cmd
-    def do_item_remove(self, args):
-        """
-        Usage: add_person <person_name><FELLOW|STAFF> <wants_accomodation>
-        """
-        item_id = args["<itemid>"]
-        add_obj = Item_console()
-        #add_obj.remove_item(item_id)
-        print(add_obj.remove_item(item_id))
 
     @docopt_cmd
     def do_reallocate_person(self, args):
         """
         Usage: reallocate_person <person_identifier> <room_name>
         """
-        item_id = args["<itemid>"]
-        add_obj = Item_console()
-        add_obj.item_check_out(item_id)
-        print
-        "Item Checked Out"
+        emp_no = args["<person_identifier>"]
+        room_name = args["<room_name>"]
+        real_obj = Person()
+
+        print real_obj.reallocate_person(emp_no,room_name)
+
 
     @docopt_cmd
     def do_load_people(self, args):
         """
-        Usage: item_checkin <itemid>
+        Usage: load_people
         """
-        item_id = args["<itemid>"]
-        add_obj = Item_console()
-        add_obj.item_check_in(item_id)
-        print
-        "Item Checked In"
+        #item_id = args["<itemid>"]
+        obj_person = Person()
+        obj_person.load_people()
 
     @docopt_cmd
     def do_print_allocations(self, args):
         """
-        Usage: item_list
+        Usage: print_allocations
         """
-        add_obj = Item_console()
-        add_obj.list_item()
+        person_obj = Person()
+        person_obj.print_allocations()
 
     @docopt_cmd
-    def do_print_unallocated(self,args):
+    def do_print_unallocated(self, args):
         """
-        Usage: item_search <itemid>
+        Usage: print_unallocated
         """
-        item_id = args["<itemid>"]
-        add_obj= Item_console()
-        print(add_obj.item_search(item_id))
+        #item_id = args["<itemid>"]
+        person_obj= Person()
+        print(person_obj.print_unallocated())
 
     @docopt_cmd
-    def do_print_room(self,args):
+    def do_print_room(self, args):
         """
-        Usage: product_type <product_code>
+        Usage: print_room <room_name>
         """
-        product_code=args["<product_code>"]
-        add_obj=Item_console()
-        print(add_obj.view_type_item(product_code))
+        room_name=args["<room_name>"]
+        person_obj= Person()
+        person_obj.print_room(room_name)
 
     @docopt_cmd
     def do_save_state(self, args):

@@ -16,8 +16,22 @@ class amity_tests(unittest.TestCase):
         # Instanciating class wide Objects
 
         self.Person = Person()
+        name = self.Person.add_person.f_name
+
         self.Room = Room ()
         self.database = Database()
+
+    def test_variables(self):
+        """Test for user defined variables"""
+
+        # Testing if the required inputs are in the right format
+        self.assertNotEqual(self.Person.add_person(" ", "WANJALA","FELLOW","123","Y"),'',msg= 'Invalid input')
+
+        self.assertNotEqual(self.Person.add_person.s_name,'',msg='Should not be blank')
+        self.assertIn(self.Person.add_person.person_job,['STAFF','FELLOW'],msg ='The person\
+                should be STAFF|FELLOW')
+        self.assertIn(slef.Person.wants_room,['YES','YE','NO'],msg='Use the correct format Y|N')
+
 
 
     def test_create_Rooms(self):
@@ -28,7 +42,7 @@ class amity_tests(unittest.TestCase):
         self.assertTrue(self.database.openDatabase(),msg="Was not able to communicate with database")
         self.assertTrue(self.database.select_all_rooms(), msg="Was not able to communiate with database")
 
-        room_list_initial= self.main_amity.load_rooms()
+        room_list_initial = self.main_amity.load_rooms()
 
 
         "Test for instance variables"
@@ -75,7 +89,8 @@ class amity_tests(unittest.TestCase):
 
         # Loading people data from application data
 
-        people_initial_list = self.Person.load_people()
+        people_initial_list = self.Person.people_list
+
 
         "Test for instance variables"
 
@@ -108,7 +123,7 @@ class amity_tests(unittest.TestCase):
 
         # Loading data dictionary for the people as allocated
 
-        person_allocation_details = self.Person.people_list
+        person_allocation_details = self.Person.add_person('SAMMY','WANJALA','FELLOW','1234','Y')
 
         # Loading data dictionary for the people as reallocated
 

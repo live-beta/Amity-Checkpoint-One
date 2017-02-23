@@ -41,7 +41,7 @@ class Person(object):
             person['job'] = person_job.upper()
             person['name'] = first_name.upper() + ' ' + second_name.upper()
             person['employee_num'] = employee_number
-            person['job'] = person_job.upper()
+            #person['job'] = person_job.upper()
             person['wants_room'] = wants_room
 
             office = obj_office.allocate_office_space()

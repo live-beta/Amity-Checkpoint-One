@@ -112,7 +112,6 @@ class Person(object):
 
             reassign = obj_living.reallocate_living_room(space.upper(),initial_room)
 
-            print reassign
 
             if reassign == True:
 
@@ -144,7 +143,7 @@ class Person(object):
 
         self.allocation(Person.people_list)
 
-        return Person.people_list
+
 
     def allocation(self, person_data):
 
@@ -162,15 +161,25 @@ class Person(object):
 
         # Lopping through the people list using the room k  ey
         for key, person in person_data.items():
-            person_living_room = person['living_space']
-            person_working_room = person['work_space']
-            occupants += 1
 
-            if person_living_room in room_key:
-                room_key[person_living_room] += (" ".join(person['name']) + "\n")
+            if person['job'] == 'FELLOW':
+                person_living_room = person['living_space']
+                person_working_room = person['work_space']
+                occupants += 1
 
-            if person_working_room in room_key:
-                room_key[person_working_room] += (" ".join(person['name']) + "\n")
+                if person_living_room in room_key:
+                    room_key[person_living_room] += (" ".join(person['name']) + "\n")
+
+                if person_working_room in room_key:
+                    room_key[person_working_room] += (" ".join(person['name']) + "\n")
+
+            elif person['job'] == 'STAFF':
+                person_working_room = person['work_space']
+                occupants +=1
+
+                if person_working_room in room_key:
+                    room_key[person_working_room] += (" ". join(person['name']) + "\n")
+
 
         for info in room_key:
             print info.upper()

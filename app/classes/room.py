@@ -120,23 +120,23 @@ class Living_Space(Room):
         else:
 
             # Traversing the room list to find the living rooms available
-            for living_space in Room.room_list:
+            for index, living_space in Room.room_list.items():
 
-                if Room.room_list[living_space]['room_category'] == 'LIVING':
+                if living_space['room_category'] == 'LIVING':
 
                     # Creating a list of available Living Rooms
 
-                    if Room.room_list[living_space]['room_category'] == \
+                    if living_space['room_category'] == \
                         'LIVING' and \
-                            Room.room_list[living_space]['occupants'] < 4:
+                            living_space['occupants'] < 4:
 
                         # Appending data for list with living spaces
 
                         living_space_list.append(living_space)
 
-                    elif Room.room_list[living_space]['room_category'] ==\
+                    elif living_space['room_category'] ==\
                         'LIVING' and \
-                            Room.room_list[living_space]['occupants'] == 4:
+                            living_space['occupants'] == 4:
 
                         # Collect all the full rooms
                         living_space_full.append(living_space)
@@ -154,9 +154,36 @@ class Living_Space(Room):
                 # Run an list index generator
                 living_space_index = randint(0, len(living_space_list)-1)
                 room_allocated = living_space_list[living_space_index]
-                Room.room_list[room_allocated]['occupants'] += 1
+                living_space['occupants'] += 1
 
-        return living_space_list[living_space_index]
+        return living_space_list[living_space_index]['room_name']
+
+    def reallocate_living_room(self, new_space, initial_room):
+        """
+        Reallocating the living area on request
+        """
+        living_rooms_available = []
+        room_allocated = {}
+
+        if len(Room.room_list) == 0:
+            return 'There are no more availble rooms in the system'
+        # Check for the room category
+        for index, space in Room.room_list.items():
+
+            # If the space in room check category
+            if space['room_category'] == 'LIVING' \
+                        and space['status'] == 'available':
+                living_rooms_available.append(index)
+
+        if new_space in living_rooms_available:
+
+            # Populating to a list if the room is an office
+            living_rooms_available[new_space]['occupants'] += 1
+            Room.room_list[initial_room]['occupants'] -= 1
+
+        return True
+
+
 
 
 class Office(Room):
@@ -191,26 +218,26 @@ class Office(Room):
 
                 # Traversing the list to determine that office spaces are available
 
-                for work_space in Room.room_list:
+                for index, work_space in Room.room_list.items():
 
-                    if Room.room_list[work_space]['room_category'] == 'OFFICE':
+                    if work_space['room_category'] == 'OFFICE':
 
                         # Creating a list of available offices
-                        if Room.room_list[work_space]['room_category'] == \
+                        if work_space['room_category'] == \
                             'OFFICE' and \
-                                Room.room_list[work_space]['occupants'] < 6:
+                                Room.room_list[index]['occupants'] < 6:
 
                             # Appending data for list with work spaces to list
 
                             work_space_list.append(work_space)
                             # work_space_list.append(Roomself.people_in_room)
 
-                        elif Room.room_list[work_space]['room_category'] ==\
+                        elif work_space['room_category'] ==\
                             'OFFICE' and \
-                                Room.room_list[work_space]['occupants'] == 6:
+                                work_space['occupants'] == 6:
 
                             # Collect all the full rooms
-                            work_space_full.append(work_space)
+                            work_space_full.append(index)
 
                         else:
 
@@ -226,78 +253,34 @@ class Office(Room):
 
                     work_space_number = randint(0, len(work_space_list)-1)
                     room_allocated = work_space_list[work_space_number]
-                    Room.room_list[room_allocated]['occupants'] += 1
+                    work_space['occupants'] += 1
 
             return work_space_list[work_space_number]
 
-    def reallocate_living_room(self,new_space, initial_room):
-        """
-        Reallocating the living area on request
-        """
-        living_rooms_available = []
-        room_allocated = {}
 
-        if len(Room.room_list) == 0:
-            return 'There are no more availble rooms in the system'
-        # Check for the room category
-        if new_space in Room.room_list:
-
-            # If the space in room check category
-            if Room.room_list[new_space]['room_category'] == 'LIVING':
-
-                return 'The Room you have entered is not an office'
-
-        else:
-            return 'Enter a valid room'
-
-        for room_entry in Room.room_list:
-            # Populating to a list if the room is an office
-            if Room.room_list[room_entry]['status'] == 'available' \
-                and Room.room_list[room_entry]['room_category'] == 'LIVING':
-
-                living_rooms_available.append(room_entry)
-
-        if len(living_rooms_available) == 0:
-            return 'Unable to reallocate. No Living spaces'
-
-        # Affecting the changes that have been requsted
-        living_rooms_available[new_space]['occupants'] += 1
-        Room.room_list[initial_room]['occupants'] -= 1
-
-        return True
 
     def reallocate_office_space(self, new_space, initial_room):
 
-        # Check whether there ar any available rooms
-
-        offices_available = []
+        """
+        Reallocating the living area on request
+        """
+        office_space_available = []
         room_allocated = {}
 
         if len(Room.room_list) == 0:
             return 'There are no more availble rooms in the system'
         # Check for the room category
-        if new_space in Room.room_list:
+        for index, space in Room.room_list.items():
 
             # If the space in room check category
-            if Room.room_list[new_space]['room_category'] == 'LIVING':
+            if space['room_category'] == 'LIVING' \
+                        and space['status'] == 'available':
+                office_space_available.append(index)
 
-                return 'The Room you have entered is not an office'
+        if new_space in office_space_available:
 
-        else:
-            return 'Enter a valid room'
-
-        for room_entry in Room.room_list:
-            # Populating to a list if the room is an office
-            if Room.room_list[room_entry]['status'] == 'available' \
-                and Room.room_list[room_entry]['room_category'] == 'OFFICE':
-
-                offices_available.append(room_entry)
-
-        if len(offices_available) == 0:
-            return 'Unable to reallocate. No Office spaces'
-
-        # Affecting the changes that have been requsted
-        offices_available[new_space]['occupants'] += 1
-        Room.room_list[initial_room]['occupants'] -= 1
+            # Affecting the changes that are being made in the rooms
+            office_space_available[new_space]['occupants'] += 1
+            Room.room_list[initial_room]['occupants'] -= 1
 
         return True

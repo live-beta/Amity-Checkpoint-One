@@ -1,6 +1,6 @@
 from dbmodels import (Base, create_database,
-                               Room as room_model,
-                               Person as person_model)
+                      Room as room_model,
+                      Person as person_model)
 from person import Person
 from room import Room
 

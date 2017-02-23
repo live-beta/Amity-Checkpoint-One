@@ -32,7 +32,6 @@ class Room(object):
             else:
 
                 # Populate room decitionary
-                # Define the room attributes
 
                 room['room_category'] = room_category.upper()
                 room['room_name'] = room_name.upper()
@@ -51,12 +50,7 @@ class Room(object):
 
                     room['room_size'] = 6
 
-
-
-            # Update the real time room list.
-
             Room.room_list[room_name] = room
-
 
     def print_room(self, room_name):
 
@@ -114,12 +108,10 @@ class Living_Space(Room):
 
         else:
 
-            # Traversing the room list to find the living rooms available
+            # Searching the room list to find living rooms available
             for index, living_space in Room.room_list.items():
 
                 if living_space['room_category'] == 'LIVING':
-
-                    # Creating a list of available Living Rooms
 
                     if living_space['room_category'] == \
                         'LIVING' and \
@@ -179,8 +171,6 @@ class Living_Space(Room):
         return True
 
 
-
-
 class Office(Room):
 
     """docstring for Office."""
@@ -196,11 +186,8 @@ class Office(Room):
 
             """
 
-            # Check if room list contains available rooms.
-
             work_space_list = []
             work_space_full = []
-            # people = {}
             work_space_number = None
 
             # Populating list with office spaces
@@ -211,7 +198,7 @@ class Office(Room):
 
             else:
 
-                # Traversing the list to determine that office spaces are available
+                # Searching list to determine available rooms
 
                 for index, work_space in Room.room_list.items():
 
@@ -225,7 +212,6 @@ class Office(Room):
                             # Appending data for list with work spaces to list
 
                             work_space_list.append(work_space)
-                            # work_space_list.append(Roomself.people_in_room)
 
                         elif work_space['room_category'] ==\
                             'OFFICE' and \
@@ -252,8 +238,6 @@ class Office(Room):
 
             return work_space_list[work_space_number]
 
-
-
     def reallocate_office_space(self, new_space, initial_room):
 
         """
@@ -274,7 +258,7 @@ class Office(Room):
 
         if new_space in office_space_available:
 
-            # Affecting the changes that are being made in the rooms
+            # Reflecting reallocation details
             office_space_available[new_space]['occupants'] += 1
             Room.room_list[initial_room]['occupants'] -= 1
 

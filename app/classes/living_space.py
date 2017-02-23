@@ -1,9 +1,9 @@
 from room import Room
 
+
 class LivingSpace(Room):
 
     """docstring for LivingSpace."""
-
 
     def __init__(self, arg):
         super(LivingSpace, self).__init__()
@@ -120,7 +120,7 @@ class LivingSpace(Room):
 
                 reallocate_space_index = randint(0, len(living_available)-1)
                 room_allocated['name'] = \
-                living_available[reallocate_space_index]
+                    living_available[reallocate_space_index]
                 room_allocated['category'] = 'LIVING'
                 Room.room_list[allocate_new]['occupants'] += 1
 
@@ -131,7 +131,6 @@ class LivingSpace(Room):
                 # If the system does not contain the required room name
 
                 return 'Room not in the system'
-
 
     def print_living_space(arg):
         pass

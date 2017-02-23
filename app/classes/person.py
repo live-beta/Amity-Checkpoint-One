@@ -2,6 +2,7 @@ import os
 from room import Room, Living_Space, Office, Living_Space
 from random import randint
 
+
 class Person(object):
 
     """docstring for Person."""
@@ -10,27 +11,24 @@ class Person(object):
     person_info = []
 
     def __init__(self):
-
         pass
 
     def add_person(self, first_name, second_name, person_job, employee_number, wants_room):
+
         """
         Function that adds a new person to the system
 
         """
-        # if first_name is None:
-        #     return 'Invalid first name input'
-
         person = {}
         obj_living = Living_Space()
         obj_office = Office()
-        # obj_office = Office()
 
         # Check if the person already exists in the people list
 
         if employee_number in Person.people_list:
 
-            return 'Employee already exists in the system, check the employee number'
+            return 'Employee already exists in the system, \
+                        check the employee number'
 
         # Add person, only if they are 'STAFF' or 'FELLOW'
 
@@ -41,7 +39,6 @@ class Person(object):
             person['job'] = person_job.upper()
             person['name'] = first_name.upper() + ' ' + second_name.upper()
             person['employee_num'] = employee_number
-            #person['job'] = person_job.upper()
             person['wants_room'] = wants_room
 
             office = obj_office.allocate_office_space()
@@ -51,7 +48,7 @@ class Person(object):
             else:
                 person['work_space'] = office['room_name']
 
-            # Capturing the allcation transaction infomrmation
+            # Capturing allocation transaction
             if wants_room.upper() == 'Y' and person_job.upper() \
                     == 'FELLOW':
 
@@ -84,7 +81,6 @@ class Person(object):
         persons_data = Person.people_list
         self.allocation(persons_data)
 
-
     def reallocate_person(self, emp_no, space):
 
         """
@@ -96,7 +92,6 @@ class Person(object):
         obj_room = Room()
         obj_living = Living_Space()
         obj_office = Office()
-
 
         for index, area in Room.room_list.items():
 
@@ -118,15 +113,13 @@ class Person(object):
             if space == initial_room:
                 return 'Cannot reallocate to the same room'
 
-            reassign = obj_living.reallocate_living_room(space.upper(),initial_room)
-
+            reassign = obj_living.reallocate_living_room(space.upper(), initial_room)
 
             if reassign == True:
 
                 if allocation_preference == 'N':
 
                     return 'Person does not want a living room'
-
 
                 Person.people_list[emp_no]['living_space'] = space
 
@@ -151,8 +144,6 @@ class Person(object):
 
         self.allocation(Person.people_list)
 
-
-
     def allocation(self, person_data):
 
         """
@@ -162,12 +153,12 @@ class Person(object):
         room_key = {}
         occupants = 0
 
-        # Stepping throught the room dictionary to locate available
+        # Searching dictionary to locate available rooms
         for key0, room in obj_room.room_list.items():
 
             room_key[key0.upper()] = ''
 
-        # Lopping through the people list using the room k  ey
+        # Lopping through the people list using room key
         for key, person in person_data.items():
 
             if person['job'] == 'FELLOW':
@@ -176,10 +167,13 @@ class Person(object):
                 occupants += 1
 
                 if person_living_room in room_key:
-                    room_key[person_living_room] += (" ".join(person['name']) + "\n")
+                    room_key[person_living_room] \
+                        += (" ".join(person['name']) + "\n")
 
                 if person_working_room in room_key:
-                    room_key[person_working_room] += (" ".join(person['name']) + "  " + " ".join(person['job'].lower()) + "\n")
+                    room_key[person_working_room] \
+                            += (" ".join(person['name']) + "  " + " ".\
+                                join(person['job'].lower()) + "\n")
 
             elif person['job'] == 'STAFF':
                 person_working_room = person['work_space']
@@ -187,8 +181,10 @@ class Person(object):
                 occupants +=1
 
                 if person_working_room in room_key:
-                    room_key[person_working_room] += (" ". join(person['name']) +"  " + " -" +  " ".join(person['job'].lower()) + "\n")
 
+                    room_key[person_working_room] += (" ". \
+                            join(person['name']) +"  " + " -" +  " ".\
+                                join(person['job'].lower()) + "\n")
 
         for info in room_key:
             print info.upper()
@@ -282,9 +278,9 @@ class Person(object):
                     second_name = person[1]
                     job_type = person[2].strip()
                     wants_accommodation = "N"
-                    employee_number = randint(0,1000)
-                    self.add_person(first_name,second_name, job_type.upper(),employee_number,
-                                    wants_accommodation)
+                    employee_number = randint(0, 1000)
+                    self.add_person(first_name, second_name, job_type.upper(),\
+                                    employee_number, wants_accommodation)
 
                 elif len(person) == 4:
                     # If there are four values
@@ -294,16 +290,13 @@ class Person(object):
                     employee_number = randint(0,1000)
                     wants_accommodation = person[3].strip()
 
-                    self.add_person(first_name, second_name, job_type.upper(), employee_number,
-                                    wants_accommodation)
-
+                    self.add_person(first_name, second_name, job_type.upper(), \
+                                    employee_number, wants_accommodation)
 
                 else:
                     return 'Not available'
 
             return 'successfully added'
-
-
 
 
 class Fellow(Person):

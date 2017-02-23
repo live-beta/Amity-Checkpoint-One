@@ -120,7 +120,7 @@ class MyInteractive(cmd.Cmd):
         Usage: reallocate_person <person_identifier> <room_name>
         """
         emp_no = args["<person_identifier>"]
-        room_name = args["<room_name>"]
+        room_name = args["<room_name>"].upper()
         real_obj = Person()
 
         print real_obj.reallocate_person(emp_no,room_name)

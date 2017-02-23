@@ -63,7 +63,7 @@ def docopt_cmd(func):
 
 class MyInteractive(cmd.Cmd):
     intro = 'Welcome to Amity'
-    prompt = 'Tell_Amity_To>> '
+    prompt = 'Amity>> '
     file = None
 
     @docopt_cmd
@@ -157,8 +157,8 @@ class MyInteractive(cmd.Cmd):
         """
         Usage: print_room <room_name>
         """
-        room_name=args["<room_name>"]
-        person_obj= Person()
+        room_name = args["<room_name>"]
+        person_obj = Person()
         person_obj.print_room(room_name)
 
     @docopt_cmd
@@ -166,16 +166,13 @@ class MyInteractive(cmd.Cmd):
         """
         Usage: compute_assetvalue
         """
-        add_obj = Item_console()
-        print(add_obj.compute_value())
 
     @docopt_cmd
     def do_load_state(self,args):
         """
         Usage: export
         """
-        add_obj = Item_console()
-        add_obj.export_data()
+
 
 
 

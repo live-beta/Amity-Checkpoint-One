@@ -43,7 +43,8 @@ class Person(object):
             person['employee_num'] = employee_number
             person['job'] = person_job.upper()
             person['wants_room'] = wants_room
-            person['work_space'] = obj_office.allocate_office_space()
+            office = obj_office.allocate_office_space()
+            person['work_space'] = office['room_name']
 
             # Capturing the allcation transaction infomrmation
             if wants_room.upper() == 'Y' and person_job.upper() \
@@ -56,6 +57,10 @@ class Person(object):
                 # work_space = obj_room.allocate_office_space()
 
                 person['living_space'] = living_space.upper()
+            elif wants_room.upper() == 'N' and person_job.upper() \
+                    == 'FELLOW':
+
+                    person['living_space'] = None
 
             elif wants_room.upper() == 'Y' and person_job.upper() \
                     == 'STAFF':
@@ -63,12 +68,6 @@ class Person(object):
                 # An instance where Staff requests for accomodation
 
                 return 'Accomodation is only available for fellows'
-
-            else:
-
-                # if fellow does not require accomodation
-
-                person['room'] = 'Unallocated'
 
         else:
 
@@ -90,39 +89,62 @@ class Person(object):
         Placing person in a different room.
 
         """
+        living_rooms = []
+        work_space = []
         obj_room = Room()
+        obj_living = Living_Space()
+        obj_office = Office()
 
-        room_reassigned = {}
+        for index, area in Room.room_list.items():
+
+            if area['room_category'] == 'LIVING':
+                # Loading  all the living rooms
+                living_rooms.append(index.upper())
+
+            if area['room_category'] == 'OFFICE':
+                work_space.append(index.upper())
 
         if space in living_rooms:
 
             initial_room = Person.people_list[emp_no]['living_space']
+            allocation_preference = Person.people_list[emp_no]['wants_room']
 
-            if space == intial_room:
+            if space == initial_room:
                 return 'Cannot reallocate to the same room'
-            reassign = obj_living.reallocate_living_space(living_space.upper(),initial_room)
+
+            reassign = obj_living.reallocate_living_room(space.upper(),initial_room)
+
+            print reassign
 
             if reassign == True:
+
+                if allocation_preference == 'N':
+
+                    return 'Person does not want a living room'
+
+
                 Person.people_list[emp_no]['living_space'] = space
+
             else:
-                return 'Reallocation successful'
+
+                return 'Reallocation not successful'
 
         elif space in work_space:
 
             initial_room = Person.people_list[emp_no]['work_space']
 
-            if space == initial_room:
+            if space is initial_room:
                 return 'Cannot allocate to the same room'
-            reassign = obj_office.reallocate_office_space(work_space.upper(),intial_room)
+            reassign = obj_office.reallocate_office_space(space.upper(),initial_room)
 
             if reassign is True:
 
-                Person.people_list[emp_no]['work_space'] = space
+                Person.people_list[emp_no]['work_space'] = space.upper()
         else:
 
-            return 'Enter the correct room '
+            return 'Enter a correct room name'
 
-        self.allocation(Person.people_list)'
+        self.allocation(Person.people_list)
 
         return Person.people_list
 
@@ -140,12 +162,18 @@ class Person(object):
 
             room_key[key0.upper()] = ''
 
-        # Lopping through the people list using the room key
+        # Lopping through the people list using the room k  ey
         for key, person in person_data.items():
-            person_room = person['work_space'].upper()
+            print person
+            person_living_room = person['living_space']
+            person_working_room = person['work_space']
             occupants += 1
-            if person_room in room_key:
-                room_key[person_room] += (" ".join(person['name']) + "\n")
+
+            if person_living_room in room_key:
+                room_key[person_living_room] += (" ".join(person['name']) + "\n")
+
+            if person_working_room in room_key:
+                room_key[person_working_room] += (" ".join(person['name']) + "\n")
 
         for info in room_key:
             print info.upper()
@@ -169,9 +197,9 @@ class Person(object):
 
         # Lopping through the people list using the room key
         for key, person in people_info.items():
-            person_room = person['work_space'].upper()
+            person_room = person['work_space']['room_name'].upper()
 
-            if person_room in room_key:
+            if person_room.upper() in room_key:
                 room_key[person_room] += (" ".join(person['name']) + "\n")
 
         for info in room_key:

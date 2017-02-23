@@ -192,27 +192,8 @@ class Person(object):
         Prints out allocation information
 
         """
-        obj_room = Room()
-        people_info = Person.people_list
-        room_key = {}
-
-        # loading data from fictionary
-
-        for nkey, room in obj_room.room_list.items():
-            room_key[nkey.upper()] = ''
-
-        # Lopping through the people list using the room key
-        for key, person in people_info.items():
-            person_room = person['work_space']['room_name'].upper()
-
-            if person_room.upper() in room_key:
-                room_key[person_room] += (" ".join(person['name']) + "\n")
-
-        for info in room_key:
-            print info.upper()
-            print '-' * 20
-            print room_key[info]
-            print '_' * 20
+        people_list = Person.people_list
+        return self.allocation(people_list)
 
     def print_room(self, work_space):
 

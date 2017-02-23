@@ -2,7 +2,8 @@
 """
 Usage:
     amity create_room <category> <room_name>...
-    amity add_person <f_name> <s_sname> <person_job> <employee_number> [<wants_accomodation>]
+    amity add_person <f_name> <s_sname> <person_job> \
+                <employee_number> [<wants_accomodation>]
     amity reallocate_person <person_identifier> <room_name>
     amity load_people <filename>
     amity print_allocations
@@ -23,11 +24,10 @@ Options:
 import sys
 import cmd
 from docopt import docopt, DocoptExit
+from random import randint
 from classes.person import Person
 from classes.room import Room
-from random import randint
 from classes.Amity import Amity
-# From inventory import Item_console
 
 
 def docopt_cmd(func):
@@ -41,8 +41,6 @@ def docopt_cmd(func):
             opt = docopt(fn.__doc__, arg)
 
         except DocoptExit as e:
-            # The DocoptExit is thrown when the args do not match.
-            # We print a message to the user and the usage block.
 
             print('Invalid Command!')
             print(e)
@@ -76,8 +74,6 @@ class MyInteractive(cmd.Cmd):
         category = args["<category>"]
         add_obj = Room()
 
-        #print "this is to show that this function has a heart"
-
         if category.upper() != 'LIVING' and category.upper() != 'OFFICE':
 
             print category + ' Is not a valid Room type, \
@@ -90,30 +86,20 @@ class MyInteractive(cmd.Cmd):
     @docopt_cmd
     def do_add_person(self, args):
         """
-        Usage: add_person <f_name> <s_name> <person_job> <employee_number> [<wants_accomodation>]
+        Usage: add_person <f_name> <s_name> <person_job>\
+        §              <employee_number> [<wants_accomodation>]
         """
-        s_name =args["<s_name>"]
+        s_name = args["<s_name>"]
         employee_number = None
         f_name = args["<f_name>"]
         person_job = args["<person_job>"]
         wants_accomodation = args["<wants_accomodation>"] or "N"
-        employee_number =args["<employee_number>"]
-
-        # Create Employee number using number generator and stringbuilder
-        # number =randint(0,1000)
-        #
-        # if person_job.upper()=="FELLOW":
-        #
-        #     employee_number = 'F%d' %(number)
-        #
-        # elif person_job.upper() == "STAFF":
-        #     employee_number = 'S%d' %(number)
+        employee_number = args["<employee_number>"]
 
         add_obj = Person()
 
-
-        print add_obj.add_person(f_name,s_name,person_job,employee_number,wants_accomodation.upper())
-
+        print add_obj.add_person(f_name, s_name, person_job,\
+                employee_number, wants_accomodation.upper())
 
     @docopt_cmd
     def do_reallocate_person(self, args):
@@ -124,16 +110,14 @@ class MyInteractive(cmd.Cmd):
         room_name = args["<room_name>"].upper()
         real_obj = Person()
 
-        print real_obj.reallocate_person(emp_no,room_name)
-
+        print real_obj.reallocate_person(emp_no, room_name)
 
     @docopt_cmd
     def do_load_people(self, args):
         """
         Usage: load_people <filename>
         """
-        #item_id = args["<itemid>"]
-        filename =args["<filename>"]
+        filename = args["<filename>"]
         obj_person = Person()
         obj_person.load_people(filename)
 
@@ -150,8 +134,7 @@ class MyInteractive(cmd.Cmd):
         """
         Usage: print_unallocated
         """
-        #item_id = args["<itemid>"]
-        person_obj= Person()
+        person_obj = Person()
         print(person_obj.print_unallocated())
 
     @docopt_cmd
@@ -173,13 +156,12 @@ class MyInteractive(cmd.Cmd):
         print amity.save_state(db_name)
 
     @docopt_cmd
-    def do_load_state(self,args):
+    def do_load_state(self, args):
 
         """Usage: load_state <sqlite_database>"""
         amity = Amity()
         db_name = arg["<sqlite_database>"]
         amity.load_state(db_name)
-
 
 
 opt = docopt(__doc__, sys.argv[1:])

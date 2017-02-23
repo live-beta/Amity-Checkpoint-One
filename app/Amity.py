@@ -4,7 +4,7 @@ Usage:
     amity create_room <category> <room_name>...
     amity add_person <f_name> <s_sname> <person_job> <employee_number> [<wants_accomodation>]
     amity reallocate_person <person_identifier> <room_name>
-    amity load_people
+    amity load_people <filename>
     amity print_allocations
     amity print_unallocated
     amity print_room <room_name>
@@ -18,7 +18,7 @@ Options:
     -i, --interactive  Interactive Mode
     -h, --help  Show this screen and exit.
         --export
-"""
+# """
 
 import sys
 import cmd
@@ -26,6 +26,7 @@ from docopt import docopt, DocoptExit
 from classes.person import Person
 from classes.room import Room
 from random import randint
+from classes.Amity import Amity
 # From inventory import Item_console
 
 
@@ -63,7 +64,7 @@ def docopt_cmd(func):
 
 class MyInteractive(cmd.Cmd):
     intro = 'Welcome to Amity'
-    prompt = 'Tell_Amity_To>> '
+    prompt = 'Amity>> '
     file = None
 
     @docopt_cmd
@@ -129,11 +130,12 @@ class MyInteractive(cmd.Cmd):
     @docopt_cmd
     def do_load_people(self, args):
         """
-        Usage: load_people
+        Usage: load_people <filename>
         """
         #item_id = args["<itemid>"]
+        filename =args["<filename>"]
         obj_person = Person()
-        obj_person.load_people()
+        obj_person.load_people(filename)
 
     @docopt_cmd
     def do_print_allocations(self, args):
@@ -157,25 +159,26 @@ class MyInteractive(cmd.Cmd):
         """
         Usage: print_room <room_name>
         """
-        room_name=args["<room_name>"]
-        person_obj= Person()
+        room_name = args["<room_name>"]
+        person_obj = Person()
         person_obj.print_room(room_name)
 
     @docopt_cmd
     def do_save_state(self, args):
-        """
-        Usage: compute_assetvalue
-        """
-        add_obj = Item_console()
-        print(add_obj.compute_value())
+
+        """Usage: save_state [--db=sqlite_db]"""
+
+        amity = Amity()
+        db_name = arg["--db"] or 'amity_db'
+        print amity.save_state(db_name)
 
     @docopt_cmd
     def do_load_state(self,args):
-        """
-        Usage: export
-        """
-        add_obj = Item_console()
-        add_obj.export_data()
+
+        """Usage: load_state <sqlite_database>"""
+        amity = Amity()
+        db_name = arg["<sqlite_database>"]
+        amity.load_state(db_name)
 
 
 

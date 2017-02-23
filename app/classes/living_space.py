@@ -66,7 +66,7 @@ class LivingSpace(Room):
 
         return living_space_list[living_space_index]
 
-    def reallocate_living_space(arg):
+    def reallocate_living_space(self,):
 
         offices_available = []
         room_allocated = {}

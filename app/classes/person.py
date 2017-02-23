@@ -1,6 +1,6 @@
 import os
 from room import Room, Living_Space, Office, Living_Space
-
+from random import randint
 
 class Person(object):
 
@@ -43,6 +43,7 @@ class Person(object):
             person['employee_num'] = employee_number
             person['job'] = person_job.upper()
             person['wants_room'] = wants_room
+
             office = obj_office.allocate_office_space()
             person['work_space'] = office['room_name']
 
@@ -79,9 +80,6 @@ class Person(object):
         persons_data = Person.people_list
         self.allocation(persons_data)
 
-        # Print people list
-
-        return Person.people_list
 
     def reallocate_person(self, emp_no, space):
 
@@ -164,7 +162,6 @@ class Person(object):
 
         # Lopping through the people list using the room k  ey
         for key, person in person_data.items():
-            print person
             person_living_room = person['living_space']
             person_working_room = person['work_space']
             occupants += 1
@@ -268,19 +265,46 @@ class Person(object):
         else:
             return unallocated_list
 
-    def load_people(self):
+    def load_people(self, filename):
 
         """
-        Adding people from a text file on the users system
+        Adding people from a text file
 
-        # """
-        # myfile = open("people.txt", "r")
-        # data = ""
-        # lines = myfile.readlines()
-        # print lines
-        # for line in lines:
-        #     data = data + line.strip()
-        # print data
+        """
+        with open(filename, 'r') as people_file:
+            people = people_file.readlines()
+
+            for person in people:
+                person = person.split(' ')
+
+                if len(person) == 3:
+                    # if there are three values
+                    first_name = person[0]
+                    second_name = person[1]
+                    job_type = person[2].strip()
+                    wants_accommodation = "N"
+                    employee_number = randint(0,1000)
+                    self.add_person(first_name,second_name, job_type.upper(),employee_number,
+                                    wants_accommodation)
+
+                elif len(person) == 4:
+                    # If there are four values
+                    first_name = person[0]
+                    second_name = person[1]
+                    job_type = person[2].strip()
+                    employee_number = randint(0,1000)
+                    wants_accommodation = person[3].strip()
+
+                    self.add_person(first_name, second_name, job_type.upper(), employee_number,
+                                    wants_accommodation)
+
+
+                else:
+                    return 'Not available'
+
+            return 'successfully added'
+
+
 
 
 class Fellow(Person):

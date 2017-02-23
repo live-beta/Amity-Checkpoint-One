@@ -56,11 +56,7 @@ class Room(object):
             # Update the real time room list.
 
             Room.room_list[room_name] = room
-        # Room.people_in_room_data[room_name] = people
 
-        # Print Existing room list
-
-        print Room.room_list
 
     def print_room(self, room_name):
 
@@ -88,7 +84,6 @@ class Room(object):
         room_info = room_data.readline()
 
         while line:
-            print line
             line = f.readline()
         f.close()
 

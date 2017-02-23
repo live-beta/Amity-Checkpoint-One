@@ -45,7 +45,11 @@ class Person(object):
             person['wants_room'] = wants_room
 
             office = obj_office.allocate_office_space()
-            person['work_space'] = office['room_name']
+
+            if office == 'None':
+                person['work_space'] = 'Unallocated'
+            else:
+                person['work_space'] = office['room_name']
 
             # Capturing the allcation transaction infomrmation
             if wants_room.upper() == 'Y' and person_job.upper() \
@@ -93,6 +97,7 @@ class Person(object):
         obj_living = Living_Space()
         obj_office = Office()
 
+
         for index, area in Room.room_list.items():
 
             if area['room_category'] == 'LIVING':
@@ -103,6 +108,9 @@ class Person(object):
                 work_space.append(index.upper())
 
         if space in living_rooms:
+
+            if Person.people_list[emp_no]['job'] == 'STAFF':
+                return 'Cannot reallocate Staff to living room'
 
             initial_room = Person.people_list[emp_no]['living_space']
             allocation_preference = Person.people_list[emp_no]['wants_room']
@@ -171,14 +179,15 @@ class Person(object):
                     room_key[person_living_room] += (" ".join(person['name']) + "\n")
 
                 if person_working_room in room_key:
-                    room_key[person_working_room] += (" ".join(person['name']) + "\n")
+                    room_key[person_working_room] += (" ".join(person['name']) + "  " + " ".join(person['job'].lower()) + "\n")
 
             elif person['job'] == 'STAFF':
                 person_working_room = person['work_space']
+
                 occupants +=1
 
                 if person_working_room in room_key:
-                    room_key[person_working_room] += (" ". join(person['name']) + "\n")
+                    room_key[person_working_room] += (" ". join(person['name']) +"  " + " -" +  " ".join(person['job'].lower()) + "\n")
 
 
         for info in room_key:

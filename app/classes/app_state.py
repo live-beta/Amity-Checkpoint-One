@@ -37,12 +37,12 @@ class Amity(object):
                 session.rollback()
                 return 'Person with ID %s already exists' % person_class.name
 
-        for key in Room.room_list.keys():
+        for key in Room.room_collection.keys():
             room_class = room_model()
-            room_class.room_name = Room.room_list[key]['room_name']
-            room_class.room_type = Room.room_list[key]['room_category']
-            room_class.capacity = Room.room_list[key]['room_size']
-            room_class.c_occupants = Room.room_list[key]['occupants']
+            room_class.room_name = Room.room_collection[key]['room_name']
+            room_class.room_type = Room.room_collection[key]['room_category']
+            room_class.capacity = Room.room_collection[key]['room_size']
+            room_class.c_occupants = Room.room_collection[key]['occupants']
             session.add(room_class)
             try:
                 session.commit()
@@ -76,7 +76,7 @@ class Amity(object):
                 r_models['capacity'] = room.capacity
                 r_models['occupants'] = room.c_occupants
 
-                Room.room_list[room.room_name] = r_models
+                Room.room_collection[room.room_name] = r_models
 
         else:
             print('No Rooms Available')

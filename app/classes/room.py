@@ -5,7 +5,7 @@ class Room(object):
 
     """docstring for Room."""
 
-    room_list = {}
+    room_collection = {}
     people_in_room_data = {}
 
     def __init__(self):
@@ -28,7 +28,7 @@ class Room(object):
         # Check if the room already exists in the room list
         for room_name in room_names:
 
-            if room_name in self.room_list:
+            if room_name in self.room_collection:
 
                 print 'The Room already exists in the system'
 
@@ -53,7 +53,7 @@ class Room(object):
 
                     room['room_size'] = 6
 
-            self.room_list[room_name] = room
+            self.room_collection[room_name] = room
 
     def print_room(self, room_name):
 
@@ -67,7 +67,7 @@ class Room(object):
         room_element = []
 
         # Looping through the room dictionary
-        for room in self.room_list:
+        for room in self.room_collection:
             room_element.append(room)
 
         return room_element
@@ -105,14 +105,14 @@ class Living_Space(Room):
         living_space_full = []
         living_space_index = None
 
-        if len(self.room_list) == 0:
+        if len(self.room_collection) == 0:
 
             return 'There are no rooms in the system'
 
         else:
 
             # Searching the room list to find living rooms available
-            for index, living_space in self.room_list.items():
+            for index, living_space in self.room_collection.items():
 
                 if living_space['room_category'] == 'LIVING':
 
@@ -155,10 +155,10 @@ class Living_Space(Room):
         living_rooms_available = []
         room_allocated = {}
 
-        if len(self.room_list) == 0:
+        if len(self.room_collection) == 0:
             return 'There are no more availble rooms in the system'
         # Check for the room category
-        for index, space in self.room_list.items():
+        for index, space in self.room_collection.items():
 
             # If the space in room check category
             if space['room_category'] == 'LIVING' \
@@ -169,7 +169,7 @@ class Living_Space(Room):
 
             # Populating to a list if the room is an office
             living_rooms_available[new_space]['occupants'] += 1
-            self.room_list[initial_room]['occupants'] -= 1
+            self.room_collection[initial_room]['occupants'] -= 1
 
         return True
 
@@ -195,7 +195,7 @@ class Office(Room):
 
             # Populating list with office spaces
 
-            if len(self.room_list) == 0:
+            if len(self.room_collection) == 0:
 
                 return 'None'
 
@@ -203,14 +203,14 @@ class Office(Room):
 
                 # Searching list to determine available rooms
 
-                for index, work_space in self.room_list.items():
+                for index, work_space in self.room_collection.items():
 
                     if work_space['room_category'] == 'OFFICE':
 
                         # Creating a list of available offices
                         if work_space['room_category'] == \
                             'OFFICE' and \
-                                self.room_list[index]['occupants'] < 6:
+                                self.room_collection[index]['occupants'] < 6:
 
                             # Appending data for list with work spaces to list
 
@@ -249,10 +249,10 @@ class Office(Room):
         office_space_available = []
         room_allocated = {}
 
-        if len(self.room_list) == 0:
+        if len(self.room_collection) == 0:
             return 'There are no more availble rooms in the system'
         # Check for the room category
-        for index, space in self.room_list.items():
+        for index, space in self.room_collection.items():
 
             # If the space in room check category
             if space['room_category'] == 'LIVING' \
@@ -263,6 +263,6 @@ class Office(Room):
 
             # Reflecting reallocation details
             office_space_available[new_space]['occupants'] += 1
-            self.room_list[initial_room]['occupants'] -= 1
+            self.room_collection[initial_room]['occupants'] -= 1
 
         return True

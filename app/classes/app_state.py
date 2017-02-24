@@ -22,13 +22,13 @@ class Amity(object):
 
     def save_data(self, session):
         '''use the passed session to save data'''
-        for key in Person.people.keys():
+        for key in Person.people_list.keys():
             person_class = person_model()
-            person_class.emp_id = Person.people[key]['employee_num']
-            person_class.name = Person.people[key]['name']
-            person_class.job_type = Person.people[key]['job']
-            person_class.office = Person.people[key]['office']
-            person_class.living_space = Person.people[key]['livingspace']
+            person_class.emp_id = Person.people_list[key]['employee_num']
+            person_class.name = Person.people_list[key]['name']
+            person_class.job_type = Person.people_list[key]['job']
+            person_class.office = Person.people_list[key]['work_space']
+            person_class.living_space = Person.people_list[key]['living_space']
 
             session.add(person_class)
             try:
@@ -37,12 +37,12 @@ class Amity(object):
                 session.rollback()
                 return 'Person with ID %s already exists' % person_class.name
 
-        for key in Rooms.room_list.keys():
+        for key in Room.room_list.keys():
             room_class = room_model()
-            room_class.room_name = Rooms.room_list[key]['room_name']
-            room_class.room_type = Rooms.room_list[key]['room_category']
-            room_class.capacity = Rooms.room_list[key]['room_size']
-            room_class.c_occupants = Rooms.room_list[key]['occupants']
+            room_class.room_name = Room.room_list[key]['room_name']
+            room_class.room_type = Room.room_list[key]['room_category']
+            room_class.capacity = Room.room_list[key]['room_size']
+            room_class.c_occupants = Room.room_list[key]['occupants']
             session.add(room_class)
             try:
                 session.commit()
@@ -76,7 +76,7 @@ class Amity(object):
                 r_models['capacity'] = room.capacity
                 r_models['occupants'] = room.c_occupants
 
-                Rooms.room_list[room.room_name] = r_models
+                Room.room_list[room.room_name] = r_models
 
         else:
             print('No Rooms Available')
@@ -86,10 +86,11 @@ class Amity(object):
                 p_model = {}
                 p_model['name'] = person.name
                 p_model['job'] = person.job_type
-                p_model['employee_number'] = person.emp_id
+                p_model['employee_num'] = person.emp_id
                 p_model['work_space'] = person.office
                 p_model['living_space'] = person.living_space
 
-                Person.people[person.employee_num] = p_model
+                Person.people_list[person.emp_id] = p_model
+                print 'Load successful'
         else:
             print('No People Registered')

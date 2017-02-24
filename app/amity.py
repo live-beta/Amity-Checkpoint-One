@@ -9,7 +9,7 @@ Usage:
     amity print_allocations
     amity print_unallocated
     amity print_room <room_name>
-    amity save_state[ -db =sqlite_database]
+    amity save_state [--db=sqlite_db]
     amity load_state <sqlite_database>
     amity (-o | --filename)
     amity (-i | --interactive)
@@ -27,15 +27,16 @@ from docopt import docopt, DocoptExit
 from random import randint
 from classes.person import Person
 from classes.room import Room
-from classes.Amity import Amity
+from classes.app_state import Amity
+
 
 
 def docopt_cmd(func):
+
     """
     This decorator is used to simplify the try/except block and pass the result
     of the docopt parsing to the called action.
     """
-
     def fn(self, arg):
         try:
             opt = docopt(fn.__doc__, arg)
@@ -61,6 +62,11 @@ def docopt_cmd(func):
 
 
 class MyInteractive(cmd.Cmd):
+
+    add_obj = Person()
+    obj_amity = Amity()
+    room_obj = Room()
+
     intro = 'Welcome to Amity'
     prompt = 'Amity>> '
     file = None
@@ -72,7 +78,6 @@ class MyInteractive(cmd.Cmd):
         """
         room_names = args["<room_name>"]
         category = args["<category>"]
-        add_obj = Room()
 
         if category.upper() != 'LIVING' and category.upper() != 'OFFICE':
 
@@ -81,13 +86,13 @@ class MyInteractive(cmd.Cmd):
 
         else:
 
-            add_obj.create_Rooms(room_names, category.upper())
+            self.room_obj.create_Rooms(room_names, category.upper())
 
     @docopt_cmd
     def do_add_person(self, args):
         """
         Usage: add_person <f_name> <s_name> <person_job>\
-        §              <employee_number> [<wants_accomodation>]
+                      <employee_number> [<wants_accomodation>]
         """
         s_name = args["<s_name>"]
         employee_number = None
@@ -96,9 +101,7 @@ class MyInteractive(cmd.Cmd):
         wants_accomodation = args["<wants_accomodation>"] or "N"
         employee_number = args["<employee_number>"]
 
-        add_obj = Person()
-
-        print add_obj.add_person(f_name, s_name, person_job,\
+        print self.add_obj.add_person(f_name, s_name, person_job,\
                 employee_number, wants_accomodation.upper())
 
     @docopt_cmd
@@ -108,9 +111,7 @@ class MyInteractive(cmd.Cmd):
         """
         emp_no = args["<person_identifier>"]
         room_name = args["<room_name>"].upper()
-        real_obj = Person()
-
-        print real_obj.reallocate_person(emp_no, room_name)
+        print self.add_obj.reallocate_person(emp_no, room_name)
 
     @docopt_cmd
     def do_load_people(self, args):
@@ -118,24 +119,21 @@ class MyInteractive(cmd.Cmd):
         Usage: load_people <filename>
         """
         filename = args["<filename>"]
-        obj_person = Person()
-        obj_person.load_people(filename)
+        self.add_obj.load_people(filename)
 
     @docopt_cmd
     def do_print_allocations(self, args):
         """
         Usage: print_allocations
         """
-        person_obj = Person()
-        person_obj.print_allocations()
+        self.add_obj.print_allocations()
 
     @docopt_cmd
     def do_print_unallocated(self, args):
         """
         Usage: print_unallocated
         """
-        person_obj = Person()
-        print(person_obj.print_unallocated())
+        print(self.add_obj.print_unallocated())
 
     @docopt_cmd
     def do_print_room(self, args):
@@ -143,25 +141,23 @@ class MyInteractive(cmd.Cmd):
         Usage: print_room <room_name>
         """
         room_name = args["<room_name>"]
-        person_obj = Person()
-        person_obj.print_room(room_name)
+        self.add_obj.print_room(room_name)
 
     @docopt_cmd
     def do_save_state(self, args):
 
         """Usage: save_state [--db=sqlite_db]"""
 
-        amity = Amity()
-        db_name = arg["--db"] or 'amity_db'
-        print amity.save_state(db_name)
+        db_name = args["--db"] or 'amity_db'
+        print self.obj_amity.save_state(db_name)
 
     @docopt_cmd
     def do_load_state(self, args):
 
         """Usage: load_state <sqlite_database>"""
-        amity = Amity()
-        db_name = arg["<sqlite_database>"]
-        amity.load_state(db_name)
+        db_name = args["<sqlite_database>"]
+        self.obj_amity.load_state(db_name)
+
 
 
 opt = docopt(__doc__, sys.argv[1:])

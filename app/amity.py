@@ -78,15 +78,7 @@ class MyInteractive(cmd.Cmd):
         """
         room_names = args["<room_name>"]
         category = args["<category>"]
-
-        if category.upper() != 'LIVING' and category.upper() != 'OFFICE':
-
-            print category + ' Is not a valid Room type, \
-                    try again with office or living'
-
-        else:
-
-            self.room_obj.create_Rooms(room_names, category.upper())
+        self.room_obj.create_Rooms(room_names, category.upper())
 
     @docopt_cmd
     def do_add_person(self, args):

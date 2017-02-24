@@ -18,9 +18,12 @@ class Room(object):
         there are no duplicate entries,correct size and category
 
         """
+        if category.upper() != 'LIVING' and category.upper() != 'OFFICE':
+
+            print category + ' Is not a valid Room type, \
+                    try again with office or living'
 
         room = {}
-        people = {}
 
         # Check if the room already exists in the room list
         for room_name in room_names:

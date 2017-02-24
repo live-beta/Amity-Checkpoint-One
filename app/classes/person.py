@@ -9,9 +9,19 @@ class Person(object):
     people_list = {}
     room_allocation_info = {}
     person_info = []
+    obj_room = Room()
+    obj_living = Living_Space()
+    obj_office = Office()
 
     def __init__(self):
-        pass
+
+        self.first_name = None
+        self.second_name = None
+        self.person_job = None
+        self.employee_number = None
+        self.wants_room = None
+
+
 
     def add_person(self, first_name, second_name, person_job, employee_number, wants_room):
 
@@ -20,12 +30,10 @@ class Person(object):
 
         """
         person = {}
-        obj_living = Living_Space()
-        obj_office = Office()
 
         # Check if the person already exists in the people list
 
-        if employee_number in Person.people_list:
+        if employee_number in self.people_list:
 
             return 'Employee already exists in the system, \
                         check the employee number'
@@ -41,7 +49,7 @@ class Person(object):
             person['employee_num'] = employee_number
             person['wants_room'] = wants_room
 
-            office = obj_office.allocate_office_space()
+            office = self.obj_office.allocate_office_space()
 
             if office == 'None':
                 person['work_space'] = 'Unallocated'
@@ -54,7 +62,7 @@ class Person(object):
 
                 # If Fellow wants accomodation
 
-                living_space = obj_living.allocate_living_room()
+                living_space = self.obj_living.allocate_living_room()
 
                 # work_space = obj_room.allocate_office_space()
 
@@ -77,9 +85,10 @@ class Person(object):
 
         # Update the people list.
 
-        Person.people_list[employee_number] = person
-        persons_data = Person.people_list
+        self.people_list[employee_number] = person
+        persons_data = self.people_list
         self.allocation(persons_data)
+
 
     def reallocate_person(self, emp_no, space):
 
@@ -89,9 +98,6 @@ class Person(object):
         """
         living_rooms = []
         work_space = []
-        obj_room = Room()
-        obj_living = Living_Space()
-        obj_office = Office()
 
         for index, area in Room.room_list.items():
 
@@ -104,16 +110,16 @@ class Person(object):
 
         if space in living_rooms:
 
-            if Person.people_list[emp_no]['job'] == 'STAFF':
+            if self.people_list[emp_no]['job'] == 'STAFF':
                 return 'Cannot reallocate Staff to living room'
 
-            initial_room = Person.people_list[emp_no]['living_space']
-            allocation_preference = Person.people_list[emp_no]['wants_room']
+            initial_room = self.people_list[emp_no]['living_space']
+            allocation_preference = self.people_list[emp_no]['wants_room']
 
             if space == initial_room:
                 return 'Cannot reallocate to the same room'
 
-            reassign = obj_living.reallocate_living_room(space.upper(), initial_room)
+            reassign = self.obj_living.reallocate_living_room(space.upper(), initial_room)
 
             if reassign == True:
 
@@ -121,7 +127,7 @@ class Person(object):
 
                     return 'Person does not want a living room'
 
-                Person.people_list[emp_no]['living_space'] = space
+                self.people_list[emp_no]['living_space'] = space
 
             else:
 
@@ -129,39 +135,38 @@ class Person(object):
 
         elif space in work_space:
 
-            initial_room = Person.people_list[emp_no]['work_space']
+            initial_room = self.people_list[emp_no]['work_space']
 
             if space is initial_room:
                 return 'Cannot allocate to the same room'
-            reassign = obj_office.reallocate_office_space(space.upper(),initial_room)
+            reassign = self.obj_office.reallocate_office_space(space.upper(),initial_room)
 
             if reassign is True:
 
-                Person.people_list[emp_no]['work_space'] = space.upper()
+                self.people_list[emp_no]['work_space'] = space.upper()
         else:
 
             return 'Enter a correct room name'
 
-        self.allocation(Person.people_list)
+        self.allocation(self.people_list)
 
     def allocation(self, person_data):
 
         """
         Adds information to the allocations record
         """
-        obj_room = Room()
         room_key = {}
         occupants = 0
 
         # Searching dictionary to locate available rooms
-        for key0, room in obj_room.room_list.items():
+        for key0, room in self.obj_room.room_list.items():
 
             room_key[key0.upper()] = ''
 
         # Lopping through the people list using room key
         for key, person in person_data.items():
 
-            if person['job'] == 'FELLOW':
+            if person['job'] == 'FELLOW' and len(Room.room_list) > 1:
                 person_living_room = person['living_space']
                 person_working_room = person['work_space']
                 occupants += 1
@@ -185,6 +190,8 @@ class Person(object):
                     room_key[person_working_room] += (" ". \
                             join(person['name']) +"  " + " -" +  " ".\
                                 join(person['job'].lower()) + "\n")
+            else:
+                return 'Are no rooms in the system'
 
         for info in room_key:
             print info.upper()
@@ -197,7 +204,7 @@ class Person(object):
         Prints out allocation information
 
         """
-        people_list = Person.people_list
+        people_list = self.people_list
         return self.allocation(people_list)
 
     def print_room(self, work_space):
@@ -205,10 +212,9 @@ class Person(object):
         """
         Printing people in a room
         """
-        obj_room = Room()
-        rooms = obj_room.room_list
+        rooms = self.obj_room.room_list
         room_id = []
-        persons_data = Person.people_list
+        persons_data = self.people_list
 
         if len(rooms) == 0:
             print 'There are no rooms in the system'
@@ -250,7 +256,7 @@ class Person(object):
         """
         unallocated_list = []
 
-        for key, person in Person.people_list.items():
+        for key, person in self.people_list.items():
 
             if person['work_space'] == 'None':
                 unallocated_list.append(person['name'])

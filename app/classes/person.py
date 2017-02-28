@@ -6,22 +6,17 @@ from random import randint
 class Person(object):
 
     """docstring for Person."""
-    people_list = {}
     room_allocation_info = {}
     person_info = []
     obj_room = Room()
     obj_living = Living_Space()
     obj_office = Office()
+    people_list = {}
+    living_rooms = []
+    work_space = []
 
     def __init__(self):
-
-        self.first_name = None
-        self.second_name = None
-        self.person_job = None
-        self.employee_number = None
-        self.wants_room = None
-
-
+        pass
 
     def add_person(self, first_name, second_name, person_job, employee_number, wants_room):
 
@@ -35,8 +30,7 @@ class Person(object):
 
         if employee_number in self.people_list:
 
-            return 'Employee already exists in the system, \
-                        check the employee number'
+            return 'Employee already exists'
 
         # Add person, only if they are 'STAFF' or 'FELLOW'
 
@@ -51,7 +45,7 @@ class Person(object):
 
             office = self.obj_office.allocate_office_space()
 
-            if office == 'None':
+            if office == 'None' or office == 'No more rooms':
                 person['work_space'] = 'Unallocated'
             else:
                 person['work_space'] = office['room_name']
@@ -64,31 +58,36 @@ class Person(object):
 
                 living_space = self.obj_living.allocate_living_room()
 
-                # work_space = obj_room.allocate_office_space()
 
                 person['living_space'] = living_space.upper()
             elif wants_room.upper() == 'N' and person_job.upper() \
                     == 'FELLOW':
 
-                    person['living_space'] = None
+                    person['living_space'] = 'Unallocated'
 
             elif wants_room.upper() == 'Y' and person_job.upper() \
                     == 'STAFF':
 
                 # An instance where Staff requests for accomodation
+                person['living_space'] = 'Unallocated'
 
                 return 'Accomodation is only available for fellows'
+            elif wants_room.upper() == 'N' and person_job.upper() \
+                    == 'STAFF':
+                person['living_space'] = 'Unallocated'
 
         else:
 
-            return 'Enter the correct job description'
+            return 'Enter correct job description'
 
         # Update the people list.
 
         self.people_list[employee_number] = person
         persons_data = self.people_list
+
         self.allocation(persons_data)
 
+        return 'Added successfully'
 
     def reallocate_person(self, emp_no, space):
 
@@ -96,19 +95,17 @@ class Person(object):
         Placing person in a different room.
 
         """
-        living_rooms = []
-        work_space = []
 
-        for index, area in Room.room_list.items():
+        for index, area in self.obj_room.room_collection.items():
 
             if area['room_category'] == 'LIVING':
                 # Loading  all the living rooms
-                living_rooms.append(index.upper())
+                self.living_rooms.append(index.upper())
 
             if area['room_category'] == 'OFFICE':
-                work_space.append(index.upper())
+                self.work_space.append(index.upper())
 
-        if space in living_rooms:
+        if space in self.living_rooms:
 
             if self.people_list[emp_no]['job'] == 'STAFF':
                 return 'Cannot reallocate Staff to living room'
@@ -133,7 +130,7 @@ class Person(object):
 
                 return 'Reallocation not successful'
 
-        elif space in work_space:
+        elif space in self.work_space:
 
             initial_room = self.people_list[emp_no]['work_space']
 
@@ -149,6 +146,7 @@ class Person(object):
             return 'Enter a correct room name'
 
         self.allocation(self.people_list)
+        return 'Reallocated successfully '
 
     def allocation(self, person_data):
 
@@ -159,14 +157,14 @@ class Person(object):
         occupants = 0
 
         # Searching dictionary to locate available rooms
-        for key0, room in self.obj_room.room_list.items():
+        for key0, room in self.obj_room.room_collection.items():
 
             room_key[key0.upper()] = ''
 
         # Lopping through the people list using room key
         for key, person in person_data.items():
 
-            if person['job'] == 'FELLOW' and len(Room.room_list) > 1:
+            if person['job'] == 'FELLOW' and len(self.obj_room.room_collection) > 1:
                 person_living_room = person['living_space']
                 person_working_room = person['work_space']
                 occupants += 1
@@ -191,7 +189,10 @@ class Person(object):
                             join(person['name']) +"  " + " -" +  " ".\
                                 join(person['job'].lower()) + "\n")
             else:
-                return 'Are no rooms in the system'
+                return 'No rooms in the system'
+
+        return 'Allocation complete'
+
 
         for info in room_key:
             print info.upper()
@@ -212,12 +213,12 @@ class Person(object):
         """
         Printing people in a room
         """
-        rooms = self.obj_room.room_list
+        rooms = self.obj_room.room_collection
         room_id = []
         persons_data = self.people_list
 
         if len(rooms) == 0:
-            print 'There are no rooms in the system'
+            return 'There are no rooms in the system'
         else:
             # Populating the room key
 
@@ -244,9 +245,10 @@ class Person(object):
                     print '_' * 20
                     print r_key[room_info]
                     print '_' * 20
+                return 'Print successful'
 
             else:
-                print 'There is no room named ' + work_space.upper()
+                return 'There is no room named ' + work_space.upper()
 
     def print_unallocated(self):
 
@@ -312,9 +314,6 @@ class Fellow(Person):
     def __init__(self, arg):
         super(fellow, self).__init__()
         self.arg = arg
-
-    def allocate_living_room(self, emp_no):
-        pass
 
 
 class Staff(Person):

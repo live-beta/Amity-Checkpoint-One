@@ -93,8 +93,8 @@ class MyInteractive(cmd.Cmd):
         wants_accomodation = args["<wants_accomodation>"] or "N"
         employee_number = args["<employee_number>"]
 
-        print self.add_obj.add_person(f_name, s_name, person_job,\
-                employee_number, wants_accomodation.upper())
+        print (self.add_obj.add_person(f_name, s_name, person_job,\
+                employee_number, wants_accomodation.upper()))
 
     @docopt_cmd
     def do_reallocate_person(self, args):
@@ -111,14 +111,14 @@ class MyInteractive(cmd.Cmd):
         Usage: load_people <filename>
         """
         filename = args["<filename>"]
-        self.add_obj.load_people(filename)
+        print self.add_obj.load_people(filename)
 
     @docopt_cmd
     def do_print_allocations(self, args):
         """
         Usage: print_allocations
         """
-        self.add_obj.print_allocations()
+        print self.add_obj.print_allocations()
 
     @docopt_cmd
     def do_print_unallocated(self, args):
@@ -133,7 +133,7 @@ class MyInteractive(cmd.Cmd):
         Usage: print_room <room_name>
         """
         room_name = args["<room_name>"]
-        self.add_obj.print_room(room_name)
+        print self.add_obj.print_room(room_name)
 
     @docopt_cmd
     def do_save_state(self, args):

@@ -37,19 +37,19 @@ class amity_tests(unittest.TestCase):
     def test_create_Rooms(self):
 
 
-        "Test for retrieving data from database, assigning to list"
+        "Test for loading database, assigning to list"
 
         self.assertTrue(self.database.openDatabase(),msg="Was not able to communicate with database")
         self.assertTrue(self.database.select_all_rooms(), msg="Was not able to communiate with database")
 
-        room_list_initial = self.main_amity.load_rooms()
+        room_collection_initial = self.main_amity.load_rooms()
 
 
         "Test for instance variables"
 
         # Check if the data is being returned successfully from database
 
-        self.assertNotEqual(len(room_list_initial),0,msg="The room records can not be blank")
+        self.assertNotEqual(len(room_collection_initial),0,msg="The room records can not be blank")
 
         # Check if the room code is in the correct format
 
@@ -77,7 +77,7 @@ class amity_tests(unittest.TestCase):
 
         # Check if there is already an instance of the room being created
 
-        self.assertIn(self.Room.name,room_list_initial,msg="Cannot save, already exists")
+        self.assertIn(self.Room.name,room_collection_initial,msg="Cannot save, already exists")
 
 
     def test_add_person(self):
@@ -214,11 +214,11 @@ class amity_tests(unittest.TestCase):
 
         # Loading Room dictionary data from database
 
-        room_list_initial= self.Room.load_Rooms()
+        room_collection_initial= self.Room.load_Rooms()
 
         # Loading Room dictionary data from the most resent application state
 
-        room_list_final= self.Room.create_Rooms('HOGWARTS','OFFICE','H001','6','0')
+        room_collection_final= self.Room.create_Rooms('HOGWARTS','OFFICE','H001','6','0')
 
         # Checking for additional data in the people list
 
@@ -226,7 +226,7 @@ class amity_tests(unittest.TestCase):
 
         #Checking for additional data in the rooms list.
 
-        self.assertTrue(len(room_list_initial) < len(room_list_final),msg="Rooms added")
+        self.assertTrue(len(room_collection_initial) < len(room_collection_final),msg="Rooms added")
 
 
 

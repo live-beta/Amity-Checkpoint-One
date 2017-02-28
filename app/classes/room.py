@@ -18,9 +18,9 @@ class Room(object):
         there are no duplicate entries,correct size and category
 
         """
-        if category.upper() != 'LIVING' and category.upper() != 'OFFICE':
+        if room_category.upper() != 'LIVING' and room_category.upper() != 'OFFICE':
 
-            print category + ' Is not a valid Room type, \
+            return room_category + ' Is not a valid Room type, \
                     try again with office or living'
 
         room = {}
@@ -28,9 +28,9 @@ class Room(object):
         # Check if the room already exists in the room list
         for room_name in room_names:
 
-            if room_name in self.room_collection:
+            if room_name.upper() in self.room_collection:
 
-                print 'The Room already exists in the system'
+                return 'The Room already exists in the system'
 
             else:
 
@@ -55,6 +55,8 @@ class Room(object):
 
             self.room_collection[room_name] = room
 
+        return 'Room(s) Added'
+
     def print_room(self, room_name):
 
         """Prints out the rooms that are available
@@ -65,26 +67,11 @@ class Room(object):
         # Declaring a list of all avaialable rooms
 
         room_element = []
-
         # Looping through the room dictionary
         for room in self.room_collection:
             room_element.append(room)
 
         return room_element
-
-    def load_Rooms(self):
-
-        # Open file with room data
-        room_data = open('load_rooms.txt')
-
-        # Read the first line
-        room_info = room_data.readline()
-
-        while line:
-            line = f.readline()
-        f.close()
-
-        return room_info
 
 
 class Living_Space(Room):
@@ -168,7 +155,6 @@ class Living_Space(Room):
         if new_space in living_rooms_available:
 
             # Populating to a list if the room is an office
-            living_rooms_available[new_space]['occupants'] += 1
             self.room_collection[initial_room]['occupants'] -= 1
 
         return True
@@ -225,11 +211,11 @@ class Office(Room):
 
                         else:
 
-                            return 'No Office spaces in the system'
+                            return 'None'
 
                 if len(work_space_list) == 0:
 
-                    return 'No more rooms'
+                    return 'None'
 
                 else:
 
@@ -250,7 +236,7 @@ class Office(Room):
         room_allocated = {}
 
         if len(self.room_collection) == 0:
-            return 'There are no more availble rooms in the system'
+            return 'There are no more available rooms in the system'
         # Check for the room category
         for index, space in self.room_collection.items():
 
